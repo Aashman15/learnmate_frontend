@@ -2,8 +2,11 @@ import { Badge, Card, Flex, HStack, IconButton } from "@chakra-ui/react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import type { CollectionBaseDto } from "../dtos/CollectionBaseDto";
-import ConfirmationDialog from "@/components/confirmation-dialog";
 import { useState } from "react";
+import { useDeleteCollection } from "../collection.hooks";
+import { toaster } from "@/components/ui/toaster";
+import { getErrorMessage } from "@/utils/error.utils";
+import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 
 type Props = {
   collection: CollectionBaseDto;
@@ -11,6 +14,25 @@ type Props = {
 
 export default function CollectionCard({ collection }: Props) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { mutateAsync: deleteCollection, isPending: isDeleting } =
+    useDeleteCollection();
+
+  const onDeleteCollection = async () => {
+    try {
+      const response = await deleteCollection(collection.id);
+      toaster.create({
+        description: response.message,
+        type: "success",
+      });
+    } catch (error) {
+      toaster.create({
+        description: getErrorMessage(error),
+        type: "error",
+      });
+    } finally {
+      setIsDeleteDialogOpen(false);
+    }
+  };
 
   return (
     <>
@@ -44,12 +66,13 @@ export default function CollectionCard({ collection }: Props) {
       </Card.Root>
 
       {/* Dialogs */}
-      <ConfirmationDialog
+      <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
         title="Are you absolutely sure ?"
         description="This action cannot be undone. This will permanently delete the collection and its data like tests and questions."
-        confirmBtnText="Delete Collection"
+        onDelete={onDeleteCollection}
+        isDeleting={isDeleting}
       />
     </>
   );

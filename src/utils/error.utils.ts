@@ -1,4 +1,5 @@
 import type { ProblemDetails } from "@/dtos/ProblemDetails";
+import { isAxiosError } from "axios";
 
 export function isProblemDetails(error: unknown): error is ProblemDetails {
   return (
@@ -11,9 +12,16 @@ export function isProblemDetails(error: unknown): error is ProblemDetails {
 }
 
 export function getErrorMessage(error: unknown): string {
-  if (isProblemDetails(error)) {
-    return error.detail;
+  const genericErrorMessage = "Something went wrong. Please try again later.";
+
+  if (isAxiosError(error)) {
+    const responseData = error.response?.data;
+    if (isProblemDetails(responseData)) {
+      return responseData.detail;
+    } else {
+      return genericErrorMessage;
+    }
   } else {
-    return "Something went wrong. Please try again later.";
+    return genericErrorMessage;
   }
 }

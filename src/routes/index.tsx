@@ -25,7 +25,7 @@ function CollectionsPage() {
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage, status } =
     useGetCollections({
       page: 1,
-      pageSize: 10,
+      pageSize: 20,
     });
 
   if (status === "pending") {
