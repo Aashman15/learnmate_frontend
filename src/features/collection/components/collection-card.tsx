@@ -7,6 +7,7 @@ import { useDeleteCollection } from "../collection.hooks";
 import { toaster } from "@/components/ui/toaster";
 import { getErrorMessage } from "@/utils/error.utils";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
+import CollectionUpdateDialog from "./collection-update-dialog";
 
 type Props = {
   collection: CollectionBaseDto;
@@ -14,6 +15,7 @@ type Props = {
 
 export default function CollectionCard({ collection }: Props) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   const { mutateAsync: deleteCollection, isPending: isDeleting } =
     useDeleteCollection();
 
@@ -50,7 +52,11 @@ export default function CollectionCard({ collection }: Props) {
           >
             <Badge>{`${collection.questionCount} Questions`}</Badge>
             <HStack gap={"2"}>
-              <IconButton variant={"outline"} size={"sm"}>
+              <IconButton
+                variant={"outline"}
+                size={"sm"}
+                onClick={() => setIsUpdateDialogOpen(true)}
+              >
                 <FaEdit />
               </IconButton>
               <IconButton
@@ -66,10 +72,15 @@ export default function CollectionCard({ collection }: Props) {
       </Card.Root>
 
       {/* Dialogs */}
+      <CollectionUpdateDialog
+        open={isUpdateDialogOpen}
+        onOpenChange={setIsUpdateDialogOpen}
+        collection={collection}
+      />
+
       <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
-        title="Are you absolutely sure ?"
         description="This action cannot be undone. This will permanently delete the collection and its data like tests and questions."
         onDelete={onDeleteCollection}
         isDeleting={isDeleting}

@@ -102,7 +102,7 @@ function CollectionsPage() {
       {/* Dialogs */}
       <CollectionCreateDialog
         open={isCreateDialogOpen}
-        onOpenChange={(d) => setIsCreateDialogOpen(d.open)}
+        onOpenChange={setIsCreateDialogOpen}
       />
     </>
   );

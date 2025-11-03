@@ -10,14 +10,34 @@ import {
   getCollectionById,
   getCollections,
   getQuestionsByCollectionId,
+  updateCollection,
 } from "./collection.api";
 import { collectionKeys } from "./collection-keys";
 import type { CollectionSearchRequest } from "./dtos/CollectionSearchRequest";
+import type { CollectionFormValues } from "./schema/collection-form-schema";
 
 export function useCreateCollection() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createCollection,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: collectionKeys.root,
+      });
+    },
+  });
+}
+
+export function useUpdateCollection() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      collectionId,
+      formValues,
+    }: {
+      collectionId: number;
+      formValues: CollectionFormValues;
+    }) => updateCollection(collectionId, formValues),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: collectionKeys.root,

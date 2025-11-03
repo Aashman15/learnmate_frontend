@@ -10,7 +10,8 @@ export const collectionFormSchema = z.object({
     .string()
     .trim()
     .min(2, "Description should be at least 2 characters long")
-    .max(500, "Description should not be more than 500 characters long"),
+    .max(500, "Description should not be more than 500 characters long")
+    .optional(),
 });
 
 export type CollectionFormValues = z.infer<typeof collectionFormSchema>;

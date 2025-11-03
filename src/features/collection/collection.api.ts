@@ -16,6 +16,17 @@ export async function createCollection(
   return response.data;
 }
 
+export async function updateCollection(
+  collectionId: number,
+  formValues: CollectionFormValues
+): Promise<CollectionBaseDto> {
+  const response = await api.patch<CollectionBaseDto>(
+    `/collections/${collectionId}`,
+    formValues
+  );
+  return response.data;
+}
+
 export async function deleteCollection(
   collectionId: number
 ): Promise<MessageDto> {

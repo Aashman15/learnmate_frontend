@@ -1,37 +1,46 @@
-import { useCreateCollection } from "@/features/collection/collection.hooks";
+import { useUpdateCollection } from "@/features/collection/collection.hooks";
 
 import type { DialogBaseProps } from "@/dtos/DialogBaseProps";
 import { getErrorMessage } from "@/utils/error.utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toaster } from "../../../components/ui/toaster";
+import type { CollectionBaseDto } from "../dtos/CollectionBaseDto";
 import {
   collectionFormSchema,
   type CollectionFormValues,
 } from "../schema/collection-form-schema";
 import CollectionFormDialog from "./collection-form-dialog";
 
-export default function CollectionCreateDialog({
+interface CollectionUpdateDialogProps extends DialogBaseProps {
+  collection: CollectionBaseDto;
+}
+
+export default function CollectionUpdateDialog({
   open,
   onOpenChange,
-}: DialogBaseProps) {
-  const { mutateAsync: createCollection } = useCreateCollection();
+  collection,
+}: CollectionUpdateDialogProps) {
+  const { mutateAsync: updateCollection } = useUpdateCollection();
 
   const form = useForm<CollectionFormValues>({
     resolver: zodResolver(collectionFormSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: collection.name,
+      description: collection.description,
     },
   });
 
   const { reset } = form;
 
-  const onCreateCollection = async (data: CollectionFormValues) => {
+  const onUpdateCollection = async (formValues: CollectionFormValues) => {
     try {
-      await createCollection(data);
+      await updateCollection({
+        collectionId: collection.id,
+        formValues: formValues,
+      });
       toaster.create({
-        description: "Collection created successfully.",
+        description: "Collection updated successfully.",
         type: "success",
       });
     } catch (error) {
@@ -50,8 +59,8 @@ export default function CollectionCreateDialog({
       open={open}
       onOpenChange={onOpenChange}
       form={form}
-      onSubmit={onCreateCollection}
-      isUpdateMode={false}
+      onSubmit={onUpdateCollection}
+      isUpdateMode={true}
     />
   );
 }
