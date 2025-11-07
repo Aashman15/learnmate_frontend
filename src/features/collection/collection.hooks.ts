@@ -1,4 +1,5 @@
 import {
+  queryOptions,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -79,8 +80,15 @@ export function useGetCollectionById(id: number) {
   });
 }
 
-export function useGetQuestionsByCollectionId(collectionId: number) {
-  return useQuery({
+export function createQueryOptionsForCollectionById(collectionId: number) {
+  return queryOptions({
+    queryKey: collectionKeys.byId(collectionId),
+    queryFn: () => getCollectionById(collectionId),
+  });
+}
+
+export function createQOForQuestionsByCollectionId(collectionId: number) {
+  return queryOptions({
     queryKey: collectionKeys.questionsByCollectionId(collectionId),
     queryFn: () => getQuestionsByCollectionId(collectionId),
   });

@@ -1,10 +1,10 @@
-import type { CollectionBaseDto } from "./dtos/CollectionBaseDto";
 import type { MessageDto } from "@/dtos/MessageDto";
-import { api } from "@/lib/axios";
-import type { CollectionFormValues } from "./schema/collection-form-schema";
-import type { CollectionSearchRequest } from "./dtos/CollectionSearchRequest";
 import type { PaginatedResponse } from "@/dtos/PaginatedResponse";
-import type { QuestionBaseDto } from "../question/dtos/QuestionBaseDto";
+import { api } from "@/lib/axios";
+import type { Question } from "@/models/question";
+import type { CollectionBaseDto } from "./dtos/CollectionBaseDto";
+import type { CollectionSearchRequest } from "./dtos/CollectionSearchRequest";
+import type { CollectionFormValues } from "./schema/collection-form-schema";
 
 export async function createCollection(
   formValues: CollectionFormValues
@@ -55,8 +55,8 @@ export async function getCollectionById(
 
 export async function getQuestionsByCollectionId(
   collectionId: number
-): Promise<QuestionBaseDto[]> {
-  const response = await api.get<QuestionBaseDto[]>(
+): Promise<Question[]> {
+  const response = await api.get<Question[]>(
     `/collections/${collectionId}/questions`
   );
   return response.data;

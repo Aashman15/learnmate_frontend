@@ -10,43 +10,65 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CollectionsCreateRouteImport } from './routes/collections/create'
+import { Route as CollectionsCollectionIdIndexRouteImport } from './routes/collections/$collectionId/index'
+import { Route as CollectionsCollectionIdCreateQuestionRouteImport } from './routes/collections/$collectionId/create-question'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CollectionsCreateRoute = CollectionsCreateRouteImport.update({
-  id: '/collections/create',
-  path: '/collections/create',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const CollectionsCollectionIdIndexRoute =
+  CollectionsCollectionIdIndexRouteImport.update({
+    id: '/collections/$collectionId/',
+    path: '/collections/$collectionId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const CollectionsCollectionIdCreateQuestionRoute =
+  CollectionsCollectionIdCreateQuestionRouteImport.update({
+    id: '/collections/$collectionId/create-question',
+    path: '/collections/$collectionId/create-question',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/collections/create': typeof CollectionsCreateRoute
+  '/collections/$collectionId/create-question': typeof CollectionsCollectionIdCreateQuestionRoute
+  '/collections/$collectionId': typeof CollectionsCollectionIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/collections/create': typeof CollectionsCreateRoute
+  '/collections/$collectionId/create-question': typeof CollectionsCollectionIdCreateQuestionRoute
+  '/collections/$collectionId': typeof CollectionsCollectionIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/collections/create': typeof CollectionsCreateRoute
+  '/collections/$collectionId/create-question': typeof CollectionsCollectionIdCreateQuestionRoute
+  '/collections/$collectionId/': typeof CollectionsCollectionIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/collections/create'
+  fullPaths:
+    | '/'
+    | '/collections/$collectionId/create-question'
+    | '/collections/$collectionId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/collections/create'
-  id: '__root__' | '/' | '/collections/create'
+  to:
+    | '/'
+    | '/collections/$collectionId/create-question'
+    | '/collections/$collectionId'
+  id:
+    | '__root__'
+    | '/'
+    | '/collections/$collectionId/create-question'
+    | '/collections/$collectionId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CollectionsCreateRoute: typeof CollectionsCreateRoute
+  CollectionsCollectionIdCreateQuestionRoute: typeof CollectionsCollectionIdCreateQuestionRoute
+  CollectionsCollectionIdIndexRoute: typeof CollectionsCollectionIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,11 +80,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/collections/create': {
-      id: '/collections/create'
-      path: '/collections/create'
-      fullPath: '/collections/create'
-      preLoaderRoute: typeof CollectionsCreateRouteImport
+    '/collections/$collectionId/': {
+      id: '/collections/$collectionId/'
+      path: '/collections/$collectionId'
+      fullPath: '/collections/$collectionId'
+      preLoaderRoute: typeof CollectionsCollectionIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collections/$collectionId/create-question': {
+      id: '/collections/$collectionId/create-question'
+      path: '/collections/$collectionId/create-question'
+      fullPath: '/collections/$collectionId/create-question'
+      preLoaderRoute: typeof CollectionsCollectionIdCreateQuestionRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -70,7 +99,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CollectionsCreateRoute: CollectionsCreateRoute,
+  CollectionsCollectionIdCreateQuestionRoute:
+    CollectionsCollectionIdCreateQuestionRoute,
+  CollectionsCollectionIdIndexRoute: CollectionsCollectionIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

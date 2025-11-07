@@ -1,15 +1,15 @@
+import CircularProgress from "@/components/circular-progress";
+import MyAlert from "@/components/my-alert";
 import { useGetCollections } from "@/features/collection/collection.hooks";
 import CollectionCard from "@/features/collection/components/collection-card";
 import CollectionCreateDialog from "@/features/collection/components/collection-create-dialog";
 import {
-  Alert,
   Button,
   Center,
   Container,
   Flex,
   Input,
   InputGroup,
-  ProgressCircle,
   SimpleGrid,
 } from "@chakra-ui/react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -31,12 +31,7 @@ function CollectionsPage() {
   if (status === "pending") {
     return (
       <Container mt={"10"}>
-        <ProgressCircle.Root value={null} size="sm">
-          <ProgressCircle.Circle>
-            <ProgressCircle.Track />
-            <ProgressCircle.Range />
-          </ProgressCircle.Circle>
-        </ProgressCircle.Root>
+        <CircularProgress />
       </Container>
     );
   }
@@ -44,16 +39,11 @@ function CollectionsPage() {
   if (status === "error") {
     return (
       <Container mt={"10"}>
-        <Alert.Root status="error">
-          <Alert.Indicator />
-          <Alert.Content>
-            <Alert.Title>Data fetching failed</Alert.Title>
-            <Alert.Description>
-              We couldn't fetch collections right now, please try again sometime
-              later.
-            </Alert.Description>
-          </Alert.Content>
-        </Alert.Root>
+        <MyAlert
+          description="We couldn't fetch collections right now, please try again sometime
+              later."
+          status={"error"}
+        />
       </Container>
     );
   }

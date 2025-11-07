@@ -1,21 +1,33 @@
-import { Container, Flex, Heading, HStack } from "@chakra-ui/react";
+import { Container, Flex, Heading } from "@chakra-ui/react";
 import { MyLink } from "./my-link";
+import { useNavigate } from "@tanstack/react-router";
 
 export function Navbar() {
+  const navigate = useNavigate();
+
   return (
-    <Container>
-      <Flex
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        py={4}
-        gap={3}
-      >
-        <Heading fontSize={"2xl"}>Learnmate</Heading>
-        <HStack gap={"6"}>
+    <>
+      <Container>
+        <Flex
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          py={4}
+          gap={3}
+        >
+          <Heading
+            fontSize={"2xl"}
+            cursor={"pointer"}
+            onClick={() =>
+              navigate({
+                to: "/",
+              })
+            }
+          >
+            Learnmate
+          </Heading>
           <MyLink to="/">Collections</MyLink>
-          <MyLink to="/collections/create">Create Collection</MyLink>
-        </HStack>
-      </Flex>
-    </Container>
+        </Flex>
+      </Container>
+    </>
   );
 }

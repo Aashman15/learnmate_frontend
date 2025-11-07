@@ -2,12 +2,13 @@ import { Badge, Card, Flex, HStack, IconButton } from "@chakra-ui/react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import type { CollectionBaseDto } from "../dtos/CollectionBaseDto";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDeleteCollection } from "../collection.hooks";
 import { toaster } from "@/components/ui/toaster";
 import { getErrorMessage } from "@/utils/error.utils";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 import CollectionUpdateDialog from "./collection-update-dialog";
+import { useNavigate } from "@tanstack/react-router";
 
 type Props = {
   collection: CollectionBaseDto;
@@ -18,6 +19,8 @@ export default function CollectionCard({ collection }: Props) {
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   const { mutateAsync: deleteCollection, isPending: isDeleting } =
     useDeleteCollection();
+
+  const navigate = useNavigate();
 
   const onDeleteCollection = async () => {
     try {
@@ -36,9 +39,30 @@ export default function CollectionCard({ collection }: Props) {
     }
   };
 
+  const handleDeleteBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleUpdateBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setIsUpdateDialogOpen(true);
+  };
+
   return (
     <>
-      <Card.Root>
+      <Card.Root
+        _hover={{
+          shadow: "lg",
+          cursor: "pointer",
+        }}
+        onClick={() =>
+          navigate({
+            to: "/collections/$collectionId",
+            params: { collectionId: collection.id.toString() },
+          })
+        }
+      >
         <Card.Header>
           <Card.Title>{collection.name}</Card.Title>
           <Card.Description>{collection.description}</Card.Description>
@@ -55,14 +79,14 @@ export default function CollectionCard({ collection }: Props) {
               <IconButton
                 variant={"outline"}
                 size={"sm"}
-                onClick={() => setIsUpdateDialogOpen(true)}
+                onClick={handleUpdateBtnClick}
               >
                 <FaEdit />
               </IconButton>
               <IconButton
                 variant={"outline"}
                 size={"sm"}
-                onClick={() => setIsDeleteDialogOpen(true)}
+                onClick={handleDeleteBtnClick}
               >
                 <AiFillDelete />
               </IconButton>

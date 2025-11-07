@@ -1,15 +1,22 @@
-export type QuestionType = "text" | "mcq" | "scq" | "true/false";
+export const QUESTION_TYPES = [
+  "TEXT",
+  "MULTIPLE_CHOICE",
+  "SINGLE_CHOICE",
+  "TRUE_FALSE",
+] as const;
 
-export const getTypeLabel = (type: QuestionType) => {
+export type QuestionType = (typeof QUESTION_TYPES)[number];
+
+export const getQuestionTypeLabel = (type: QuestionType) => {
   switch (type) {
-    case "mcq":
+    case "MULTIPLE_CHOICE":
       return "Multiple Choice";
-    case "scq":
+    case "SINGLE_CHOICE":
       return "Single Choice";
-    case "true/false":
-      return "True/False";
-    case "text":
-      return "Text Answer";
+    case "TRUE_FALSE":
+      return "True or False";
+    case "TEXT":
+      return "Text";
     default:
       return type;
   }
