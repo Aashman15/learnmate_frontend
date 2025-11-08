@@ -1,26 +1,23 @@
 import type { MessageDto } from "@/dtos/MessageDto";
 import type { PaginatedResponse } from "@/dtos/PaginatedResponse";
 import { api } from "@/lib/axios";
-import type { Question } from "@/models/question";
-import type { CollectionBaseDto } from "./dtos/CollectionBaseDto";
+import type { CollectionDto } from "./dtos/CollectionDto";
 import type { CollectionSearchRequest } from "./dtos/CollectionSearchRequest";
 import type { CollectionFormValues } from "./schema/collection-form-schema";
+import type { QuestionBaseDto } from "../question/dtos/QuestionBaseDto";
 
 export async function createCollection(
   formValues: CollectionFormValues
-): Promise<CollectionBaseDto> {
-  const response = await api.post<CollectionBaseDto>(
-    "/collections",
-    formValues
-  );
+): Promise<CollectionDto> {
+  const response = await api.post<CollectionDto>("/collections", formValues);
   return response.data;
 }
 
 export async function updateCollection(
   collectionId: number,
   formValues: CollectionFormValues
-): Promise<CollectionBaseDto> {
-  const response = await api.patch<CollectionBaseDto>(
+): Promise<CollectionDto> {
+  const response = await api.patch<CollectionDto>(
     `/collections/${collectionId}`,
     formValues
   );
@@ -36,8 +33,8 @@ export async function deleteCollection(
 
 export async function getCollections(
   request: CollectionSearchRequest
-): Promise<PaginatedResponse<CollectionBaseDto>> {
-  const response = await api.get<PaginatedResponse<CollectionBaseDto>>(
+): Promise<PaginatedResponse<CollectionDto>> {
+  const response = await api.get<PaginatedResponse<CollectionDto>>(
     `/collections`,
     {
       params: request,
@@ -46,17 +43,15 @@ export async function getCollections(
   return response.data;
 }
 
-export async function getCollectionById(
-  id: number
-): Promise<CollectionBaseDto> {
-  const response = await api.get<CollectionBaseDto>(`/collections/${id}`);
+export async function getCollectionById(id: number): Promise<CollectionDto> {
+  const response = await api.get<CollectionDto>(`/collections/${id}`);
   return response.data;
 }
 
 export async function getQuestionsByCollectionId(
   collectionId: number
-): Promise<Question[]> {
-  const response = await api.get<Question[]>(
+): Promise<QuestionBaseDto[]> {
+  const response = await api.get<QuestionBaseDto[]>(
     `/collections/${collectionId}/questions`
   );
   return response.data;

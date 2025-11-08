@@ -11,7 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CollectionsCollectionIdIndexRouteImport } from './routes/collections/$collectionId/index'
-import { Route as CollectionsCollectionIdCreateQuestionRouteImport } from './routes/collections/$collectionId/create-question'
+import { Route as CollectionsCollectionIdQuestionsNewRouteImport } from './routes/collections/$collectionId/questions/new'
+import { Route as CollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport } from './routes/collections/$collectionId/questions/$questionId.update'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,51 +25,64 @@ const CollectionsCollectionIdIndexRoute =
     path: '/collections/$collectionId/',
     getParentRoute: () => rootRouteImport,
   } as any)
-const CollectionsCollectionIdCreateQuestionRoute =
-  CollectionsCollectionIdCreateQuestionRouteImport.update({
-    id: '/collections/$collectionId/create-question',
-    path: '/collections/$collectionId/create-question',
+const CollectionsCollectionIdQuestionsNewRoute =
+  CollectionsCollectionIdQuestionsNewRouteImport.update({
+    id: '/collections/$collectionId/questions/new',
+    path: '/collections/$collectionId/questions/new',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const CollectionsCollectionIdQuestionsQuestionIdUpdateRoute =
+  CollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport.update({
+    id: '/collections/$collectionId/questions/$questionId/update',
+    path: '/collections/$collectionId/questions/$questionId/update',
     getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/collections/$collectionId/create-question': typeof CollectionsCollectionIdCreateQuestionRoute
   '/collections/$collectionId': typeof CollectionsCollectionIdIndexRoute
+  '/collections/$collectionId/questions/new': typeof CollectionsCollectionIdQuestionsNewRoute
+  '/collections/$collectionId/questions/$questionId/update': typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/collections/$collectionId/create-question': typeof CollectionsCollectionIdCreateQuestionRoute
   '/collections/$collectionId': typeof CollectionsCollectionIdIndexRoute
+  '/collections/$collectionId/questions/new': typeof CollectionsCollectionIdQuestionsNewRoute
+  '/collections/$collectionId/questions/$questionId/update': typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/collections/$collectionId/create-question': typeof CollectionsCollectionIdCreateQuestionRoute
   '/collections/$collectionId/': typeof CollectionsCollectionIdIndexRoute
+  '/collections/$collectionId/questions/new': typeof CollectionsCollectionIdQuestionsNewRoute
+  '/collections/$collectionId/questions/$questionId/update': typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/collections/$collectionId/create-question'
     | '/collections/$collectionId'
+    | '/collections/$collectionId/questions/new'
+    | '/collections/$collectionId/questions/$questionId/update'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/collections/$collectionId/create-question'
     | '/collections/$collectionId'
+    | '/collections/$collectionId/questions/new'
+    | '/collections/$collectionId/questions/$questionId/update'
   id:
     | '__root__'
     | '/'
-    | '/collections/$collectionId/create-question'
     | '/collections/$collectionId/'
+    | '/collections/$collectionId/questions/new'
+    | '/collections/$collectionId/questions/$questionId/update'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CollectionsCollectionIdCreateQuestionRoute: typeof CollectionsCollectionIdCreateQuestionRoute
   CollectionsCollectionIdIndexRoute: typeof CollectionsCollectionIdIndexRoute
+  CollectionsCollectionIdQuestionsNewRoute: typeof CollectionsCollectionIdQuestionsNewRoute
+  CollectionsCollectionIdQuestionsQuestionIdUpdateRoute: typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -87,11 +101,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionsCollectionIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/collections/$collectionId/create-question': {
-      id: '/collections/$collectionId/create-question'
-      path: '/collections/$collectionId/create-question'
-      fullPath: '/collections/$collectionId/create-question'
-      preLoaderRoute: typeof CollectionsCollectionIdCreateQuestionRouteImport
+    '/collections/$collectionId/questions/new': {
+      id: '/collections/$collectionId/questions/new'
+      path: '/collections/$collectionId/questions/new'
+      fullPath: '/collections/$collectionId/questions/new'
+      preLoaderRoute: typeof CollectionsCollectionIdQuestionsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collections/$collectionId/questions/$questionId/update': {
+      id: '/collections/$collectionId/questions/$questionId/update'
+      path: '/collections/$collectionId/questions/$questionId/update'
+      fullPath: '/collections/$collectionId/questions/$questionId/update'
+      preLoaderRoute: typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -99,9 +120,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CollectionsCollectionIdCreateQuestionRoute:
-    CollectionsCollectionIdCreateQuestionRoute,
   CollectionsCollectionIdIndexRoute: CollectionsCollectionIdIndexRoute,
+  CollectionsCollectionIdQuestionsNewRoute:
+    CollectionsCollectionIdQuestionsNewRoute,
+  CollectionsCollectionIdQuestionsQuestionIdUpdateRoute:
+    CollectionsCollectionIdQuestionsQuestionIdUpdateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

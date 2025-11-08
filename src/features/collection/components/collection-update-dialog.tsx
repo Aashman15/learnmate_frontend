@@ -5,15 +5,16 @@ import { getErrorMessage } from "@/utils/error.utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toaster } from "../../../components/ui/toaster";
-import type { CollectionBaseDto } from "../dtos/CollectionBaseDto";
+import type { CollectionDto } from "../dtos/CollectionDto";
 import {
   collectionFormSchema,
   type CollectionFormValues,
 } from "../schema/collection-form-schema";
 import CollectionFormDialog from "./collection-form-dialog";
+import { useEffect } from "react";
 
 interface CollectionUpdateDialogProps extends DialogBaseProps {
-  collection: CollectionBaseDto;
+  collection: CollectionDto;
 }
 
 export default function CollectionUpdateDialog({
@@ -30,8 +31,11 @@ export default function CollectionUpdateDialog({
       description: collection.description,
     },
   });
-
   const { reset } = form;
+
+  useEffect(() => {
+    reset(collection);
+  }, [collection, reset]);
 
   const onUpdateCollection = async (formValues: CollectionFormValues) => {
     try {

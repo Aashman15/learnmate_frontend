@@ -4,6 +4,7 @@ import { useGetCollectionById } from "@/features/collection/collection.hooks";
 import CollectionMenu from "@/features/collection/components/collection-menu";
 import QuestionsTabConent from "@/features/collection/components/questions-tab-content";
 import TestsTabContent from "@/features/collection/components/tests-tab-content";
+import { getErrorMessage } from "@/utils/error.utils";
 import { Box, Container, Flex, Heading, Tabs, Text } from "@chakra-ui/react";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { CiCircleQuestion, CiStickyNote } from "react-icons/ci";
@@ -17,9 +18,11 @@ function CollectionDetailsPage() {
     from: "/collections/$collectionId/",
   });
 
-  const { data: collection, status } = useGetCollectionById(
-    Number(collectionId)
-  );
+  const {
+    data: collection,
+    status,
+    error,
+  } = useGetCollectionById(Number(collectionId));
 
   if (status === "pending") {
     return (
@@ -32,10 +35,7 @@ function CollectionDetailsPage() {
   if (status === "error") {
     return (
       <Container mt={10}>
-        <MyAlert
-          description="Failed to fetch collection details. Please try again later."
-          status={"error"}
-        />
+        <MyAlert description={getErrorMessage(error)} status={"error"} />
       </Container>
     );
   }
@@ -57,7 +57,7 @@ function CollectionDetailsPage() {
 
         <Text>{collection.description}</Text>
       </Box>
-      <Tabs.Root defaultValue={"questions"} mt={5}>
+      <Tabs.Root defaultValue={"questions"} mt={5} pb={"16"}>
         <Tabs.List>
           <Tabs.Trigger value="questions">
             <CiCircleQuestion /> Questions

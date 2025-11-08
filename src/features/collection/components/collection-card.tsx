@@ -1,7 +1,7 @@
 import { Badge, Card, Flex, HStack, IconButton } from "@chakra-ui/react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
-import type { CollectionBaseDto } from "../dtos/CollectionBaseDto";
+import type { CollectionDto } from "../dtos/CollectionDto";
 import React, { useState } from "react";
 import { useDeleteCollection } from "../collection.hooks";
 import { toaster } from "@/components/ui/toaster";
@@ -11,7 +11,7 @@ import CollectionUpdateDialog from "./collection-update-dialog";
 import { useNavigate } from "@tanstack/react-router";
 
 type Props = {
-  collection: CollectionBaseDto;
+  collection: CollectionDto;
 };
 
 export default function CollectionCard({ collection }: Props) {

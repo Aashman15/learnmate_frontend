@@ -18,8 +18,9 @@ export default function QuestionsTabConent() {
       {questions.map((question, index) => (
         <QuestionCard
           key={question.id}
-          questionNumber={index++}
+          questionNumber={index + 1}
           question={question}
+          collectionId={Number(collectionId)}
         />
       ))}
     </Stack>

@@ -1,10 +1,8 @@
-import type { QuestionType } from "@/features/question/dtos/QuestionType";
-import type { Choice } from "./choice";
+import type { Collection } from "./collection";
 
 export interface Question {
   id: number;
   question: string;
-  type: QuestionType;
   answer?: string;
-  choices: Choice[];
+  collection: Collection;
 }

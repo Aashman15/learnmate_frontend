@@ -1,15 +1,17 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import QuestionMenu from "./question-menu";
-import type { Question } from "@/models/question";
+import type { QuestionBaseDto } from "../dtos/QuestionBaseDto";
 
 interface QuestionCardProps {
   questionNumber: number;
-  question: Question;
+  question: QuestionBaseDto;
+  collectionId: number;
 }
 
 export default function QuestionCard({
   question,
   questionNumber,
+  collectionId,
 }: QuestionCardProps) {
   return (
     <Stack>
@@ -25,13 +27,15 @@ export default function QuestionCard({
           {questionNumber} . {question.question}
         </Text>
 
-        <QuestionMenu />
+        <QuestionMenu collectionId={collectionId} question={question} />
       </Flex>
 
       {/* Answer */}
-      <Box pl={5}>
-        {question.type === "TEXT" && <Text>{question.answer}</Text>}
-      </Box>
+      {question.answer && (
+        <Box pl={5}>
+          <Text>{question.answer}</Text>
+        </Box>
+      )}
     </Stack>
   );
 }
