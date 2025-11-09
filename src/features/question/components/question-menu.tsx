@@ -63,7 +63,6 @@ export default function QuestionMenu({
         <Portal>
           <Menu.Positioner>
             <Menu.Content>
-              <Menu.Item value="show-answer">Show Answer</Menu.Item>
               <Menu.Item value="edit-question" onClick={onUpdateQuestionClick}>
                 Update Question
               </Menu.Item>

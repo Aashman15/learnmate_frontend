@@ -20,15 +20,6 @@ export default function CollectionMenu({ collection }: CollectionMenuProps) {
   const { mutateAsync: deleteCollection, isPending: isDeleting } =
     useDeleteCollection();
 
-  const onCreateQuestionClick = () => {
-    navigate({
-      to: "/collections/$collectionId/questions/new",
-      params: {
-        collectionId: collection.id.toString(),
-      },
-    });
-  };
-
   const onDeleteCollection = async () => {
     try {
       const response = await deleteCollection(collection.id);
@@ -60,13 +51,6 @@ export default function CollectionMenu({ collection }: CollectionMenuProps) {
         <Portal>
           <Menu.Positioner>
             <Menu.Content>
-              <Menu.Item
-                value="create-question"
-                onClick={onCreateQuestionClick}
-              >
-                Create Question
-              </Menu.Item>
-              <Menu.Item value="show-answers">Show Answers</Menu.Item>
               <Menu.Item
                 value="edit-collection"
                 onClick={() => setIsUpdateDialogOpen(true)}

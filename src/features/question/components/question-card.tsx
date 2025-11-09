@@ -1,6 +1,7 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import QuestionMenu from "./question-menu";
 import type { QuestionBaseDto } from "../dtos/QuestionBaseDto";
+import { useQuestionStore } from "../store/question.store";
 
 interface QuestionCardProps {
   questionNumber: number;
@@ -13,6 +14,8 @@ export default function QuestionCard({
   questionNumber,
   collectionId,
 }: QuestionCardProps) {
+  const showAnswers = useQuestionStore((state) => state.showAnswers);
+
   return (
     <Stack>
       <Flex
@@ -30,10 +33,11 @@ export default function QuestionCard({
         <QuestionMenu collectionId={collectionId} question={question} />
       </Flex>
 
-      {/* Answer */}
-      {question.answer && (
+      {showAnswers && (
         <Box pl={5}>
-          <Text>{question.answer}</Text>
+          <Text>
+            {question.answer ? question.answer : "Answer not available."}
+          </Text>
         </Box>
       )}
     </Stack>
