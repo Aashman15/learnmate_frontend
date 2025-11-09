@@ -2,8 +2,8 @@ import CircularProgress from "@/components/circular-progress";
 import MyAlert from "@/components/my-alert";
 import { useGetCollectionById } from "@/features/collection/collection.hooks";
 import CollectionMenu from "@/features/collection/components/collection-menu";
+import PracticeSessionsTabContent from "@/features/collection/components/practice-sessions-tab-content";
 import QuestionsTabConent from "@/features/collection/components/questions-tab-content";
-import TestsTabContent from "@/features/collection/components/tests-tab-content";
 import { getErrorMessage } from "@/utils/error.utils";
 import { Box, Container, Flex, Heading, Tabs, Text } from "@chakra-ui/react";
 import { createFileRoute, useParams } from "@tanstack/react-router";
@@ -71,7 +71,7 @@ function CollectionDetailsPage() {
           <QuestionsTabConent />
         </Tabs.Content>
         <Tabs.Content value="tests">
-          <TestsTabContent />
+          <PracticeSessionsTabContent />
         </Tabs.Content>
       </Tabs.Root>
     </Container>
