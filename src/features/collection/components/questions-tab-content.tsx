@@ -1,12 +1,24 @@
-import QuestionCard from "@/features/question/components/question-card";
-import { Box, Button, HStack, Stack } from "@chakra-ui/react";
+import { Accordion, Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createQOForQuestionsByCollectionId } from "../collection.hooks";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { useQuestionStore } from "@/features/question/store/question.store";
+import { useState } from "react";
+import { createQOForQuestionsByCollectionId } from "../collection.hooks";
+import { useDeleteQuestion } from "@/features/question/question.hooks";
+import { toaster } from "@/components/ui/toaster";
+import { getErrorMessage } from "@/utils/error.utils";
+import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 
 export default function QuestionsTabConent() {
   const navigate = useNavigate();
+
+  const [showAnswers, setShowAnswers] = useState(false);
+  const [showActions, setShowActions] = useState(false);
+  const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(
+    null
+  );
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { mutateAsync: deleteQuestion, isPending: isDeleting } =
+    useDeleteQuestion();
 
   const { collectionId } = useParams({
     from: "/collections/$collectionId/",
@@ -15,8 +27,6 @@ export default function QuestionsTabConent() {
   const { data: questions } = useSuspenseQuery(
     createQOForQuestionsByCollectionId(Number(collectionId))
   );
-
-  const { showAnswers, setShowAnswers } = useQuestionStore();
 
   const onCreateQuestionClick = () => {
     navigate({
@@ -27,18 +37,55 @@ export default function QuestionsTabConent() {
     });
   };
 
+  const onUpdateQuestionClick = (questionId: string) => {
+    navigate({
+      to: "/collections/$collectionId/questions/$questionId/update",
+      params: {
+        collectionId: String(collectionId),
+        questionId: questionId,
+      },
+    });
+  };
+
+  const onDeleteQuestion = async () => {
+    try {
+      const response = await deleteQuestion({
+        collectionId: +collectionId,
+        questionId: selectedQuestionId!,
+      });
+      toaster.create({
+        description: response.message,
+        type: "success",
+      });
+    } catch (error) {
+      toaster.create({
+        description: getErrorMessage(error),
+        type: "error",
+      });
+    } finally {
+      setIsDeleteDialogOpen(false);
+    }
+  };
+
   return (
-    <Box>
-      <HStack>
-        <Button onClick={onCreateQuestionClick}>Create Question</Button>
-        <Button
-          variant={"outline"}
-          onClick={() => setShowAnswers(!showAnswers)}
-        >
-          {showAnswers ? "Hide Answers" : "Show Answers"}
-        </Button>
-      </HStack>
-      <Stack mt={4} gap={4}>
+    <>
+      <Box px={10} mt={5}>
+        <HStack>
+          <Button onClick={onCreateQuestionClick}>Create Question</Button>
+          <Button
+            variant={"outline"}
+            onClick={() => setShowAnswers(!showAnswers)}
+          >
+            {showAnswers ? "Hide Answers" : "Show Answers"}
+          </Button>
+          <Button
+            variant={"outline"}
+            onClick={() => setShowActions(!showActions)}
+          >
+            {showActions ? "Hide Actions" : "Show Actions"}
+          </Button>
+        </HStack>
+        {/* <Stack mt={4} gap={4}>
         {questions.map((question, index) => (
           <QuestionCard
             key={question.id}
@@ -47,7 +94,60 @@ export default function QuestionsTabConent() {
             collectionId={Number(collectionId)}
           />
         ))}
-      </Stack>
-    </Box>
+      </Stack> */}
+        <Accordion.Root
+          mt={4}
+          multiple
+          collapsible
+          value={showAnswers ? [...questions.map((q) => String(q.id))] : []}
+          maxWidth={"4xl"}
+        >
+          {questions.map((question, index) => (
+            <Accordion.Item key={index} value={String(question.id)}>
+              <Accordion.ItemTrigger>
+                <Text fontWeight={"bold"} fontSize={"xl"}>
+                  {`${index + 1}. ${question.question}`}
+                </Text>
+              </Accordion.ItemTrigger>
+              <Accordion.ItemContent>
+                <Accordion.ItemBody>
+                  <Stack gap={4}>
+                    <Text>{question.answer}</Text>
+                    {showActions && (
+                      <HStack gap={2}>
+                        <Button
+                          variant={"outline"}
+                          onClick={() =>
+                            onUpdateQuestionClick(String(question.id))
+                          }
+                        >
+                          Update Question
+                        </Button>
+                        <Button
+                          variant={"outline"}
+                          color={"red.500"}
+                          onClick={() => {
+                            setSelectedQuestionId(question.id);
+                            setIsDeleteDialogOpen(true);
+                          }}
+                        >
+                          Delete Question
+                        </Button>
+                      </HStack>
+                    )}
+                  </Stack>
+                </Accordion.ItemBody>
+              </Accordion.ItemContent>
+            </Accordion.Item>
+          ))}
+        </Accordion.Root>
+      </Box>
+      <DeleteConfirmationDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        isDeleting={isDeleting}
+        onDelete={onDeleteQuestion}
+      />
+    </>
   );
 }

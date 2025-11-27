@@ -1,6 +1,7 @@
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import { MyLink } from "./my-link";
 import { useNavigate } from "@tanstack/react-router";
+import { ColorModeButton } from "./ui/color-mode";
 
 export function Navbar() {
   const navigate = useNavigate();
@@ -25,7 +26,10 @@ export function Navbar() {
           >
             Learnmate
           </Heading>
-          <MyLink to="/">Collections</MyLink>
+          <Flex gap={4}>
+            <MyLink to="/">Collections</MyLink>
+            <ColorModeButton />
+          </Flex>
         </Flex>
       </Container>
     </>
