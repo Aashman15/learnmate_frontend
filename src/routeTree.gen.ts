@@ -9,84 +9,140 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PracticeRouteRouteImport } from './routes/practice/route'
+import { Route as MainRouteRouteImport } from './routes/_main/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CollectionsCollectionIdIndexRouteImport } from './routes/collections/$collectionId/index'
-import { Route as CollectionsCollectionIdQuestionsNewRouteImport } from './routes/collections/$collectionId/questions/new'
-import { Route as CollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport } from './routes/collections/$collectionId/questions/$questionId.update'
+import { Route as PracticeReviewRouteImport } from './routes/practice/review'
+import { Route as PracticeQuestionRouteImport } from './routes/practice/question'
+import { Route as MainCollectionsCollectionIdIndexRouteImport } from './routes/_main/collections/$collectionId/index'
+import { Route as MainCollectionsCollectionIdQuestionsNewRouteImport } from './routes/_main/collections/$collectionId/questions/new'
+import { Route as MainCollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport } from './routes/_main/collections/$collectionId/questions/$questionId.update'
 
+const PracticeRouteRoute = PracticeRouteRouteImport.update({
+  id: '/practice',
+  path: '/practice',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainRouteRoute = MainRouteRouteImport.update({
+  id: '/_main',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CollectionsCollectionIdIndexRoute =
-  CollectionsCollectionIdIndexRouteImport.update({
+const PracticeReviewRoute = PracticeReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => PracticeRouteRoute,
+} as any)
+const PracticeQuestionRoute = PracticeQuestionRouteImport.update({
+  id: '/question',
+  path: '/question',
+  getParentRoute: () => PracticeRouteRoute,
+} as any)
+const MainCollectionsCollectionIdIndexRoute =
+  MainCollectionsCollectionIdIndexRouteImport.update({
     id: '/collections/$collectionId/',
     path: '/collections/$collectionId/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => MainRouteRoute,
   } as any)
-const CollectionsCollectionIdQuestionsNewRoute =
-  CollectionsCollectionIdQuestionsNewRouteImport.update({
+const MainCollectionsCollectionIdQuestionsNewRoute =
+  MainCollectionsCollectionIdQuestionsNewRouteImport.update({
     id: '/collections/$collectionId/questions/new',
     path: '/collections/$collectionId/questions/new',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => MainRouteRoute,
   } as any)
-const CollectionsCollectionIdQuestionsQuestionIdUpdateRoute =
-  CollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport.update({
+const MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute =
+  MainCollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport.update({
     id: '/collections/$collectionId/questions/$questionId/update',
     path: '/collections/$collectionId/questions/$questionId/update',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => MainRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/collections/$collectionId': typeof CollectionsCollectionIdIndexRoute
-  '/collections/$collectionId/questions/new': typeof CollectionsCollectionIdQuestionsNewRoute
-  '/collections/$collectionId/questions/$questionId/update': typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRoute
+  '/practice': typeof PracticeRouteRouteWithChildren
+  '/practice/question': typeof PracticeQuestionRoute
+  '/practice/review': typeof PracticeReviewRoute
+  '/collections/$collectionId': typeof MainCollectionsCollectionIdIndexRoute
+  '/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
+  '/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/collections/$collectionId': typeof CollectionsCollectionIdIndexRoute
-  '/collections/$collectionId/questions/new': typeof CollectionsCollectionIdQuestionsNewRoute
-  '/collections/$collectionId/questions/$questionId/update': typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRoute
+  '/practice': typeof PracticeRouteRouteWithChildren
+  '/practice/question': typeof PracticeQuestionRoute
+  '/practice/review': typeof PracticeReviewRoute
+  '/collections/$collectionId': typeof MainCollectionsCollectionIdIndexRoute
+  '/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
+  '/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/collections/$collectionId/': typeof CollectionsCollectionIdIndexRoute
-  '/collections/$collectionId/questions/new': typeof CollectionsCollectionIdQuestionsNewRoute
-  '/collections/$collectionId/questions/$questionId/update': typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRoute
+  '/_main': typeof MainRouteRouteWithChildren
+  '/practice': typeof PracticeRouteRouteWithChildren
+  '/practice/question': typeof PracticeQuestionRoute
+  '/practice/review': typeof PracticeReviewRoute
+  '/_main/collections/$collectionId/': typeof MainCollectionsCollectionIdIndexRoute
+  '/_main/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
+  '/_main/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/practice'
+    | '/practice/question'
+    | '/practice/review'
     | '/collections/$collectionId'
     | '/collections/$collectionId/questions/new'
     | '/collections/$collectionId/questions/$questionId/update'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/practice'
+    | '/practice/question'
+    | '/practice/review'
     | '/collections/$collectionId'
     | '/collections/$collectionId/questions/new'
     | '/collections/$collectionId/questions/$questionId/update'
   id:
     | '__root__'
     | '/'
-    | '/collections/$collectionId/'
-    | '/collections/$collectionId/questions/new'
-    | '/collections/$collectionId/questions/$questionId/update'
+    | '/_main'
+    | '/practice'
+    | '/practice/question'
+    | '/practice/review'
+    | '/_main/collections/$collectionId/'
+    | '/_main/collections/$collectionId/questions/new'
+    | '/_main/collections/$collectionId/questions/$questionId/update'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CollectionsCollectionIdIndexRoute: typeof CollectionsCollectionIdIndexRoute
-  CollectionsCollectionIdQuestionsNewRoute: typeof CollectionsCollectionIdQuestionsNewRoute
-  CollectionsCollectionIdQuestionsQuestionIdUpdateRoute: typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRoute
+  MainRouteRoute: typeof MainRouteRouteWithChildren
+  PracticeRouteRoute: typeof PracticeRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/practice': {
+      id: '/practice'
+      path: '/practice'
+      fullPath: '/practice'
+      preLoaderRoute: typeof PracticeRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_main': {
+      id: '/_main'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MainRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -94,37 +150,80 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/collections/$collectionId/': {
-      id: '/collections/$collectionId/'
+    '/practice/review': {
+      id: '/practice/review'
+      path: '/review'
+      fullPath: '/practice/review'
+      preLoaderRoute: typeof PracticeReviewRouteImport
+      parentRoute: typeof PracticeRouteRoute
+    }
+    '/practice/question': {
+      id: '/practice/question'
+      path: '/question'
+      fullPath: '/practice/question'
+      preLoaderRoute: typeof PracticeQuestionRouteImport
+      parentRoute: typeof PracticeRouteRoute
+    }
+    '/_main/collections/$collectionId/': {
+      id: '/_main/collections/$collectionId/'
       path: '/collections/$collectionId'
       fullPath: '/collections/$collectionId'
-      preLoaderRoute: typeof CollectionsCollectionIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof MainCollectionsCollectionIdIndexRouteImport
+      parentRoute: typeof MainRouteRoute
     }
-    '/collections/$collectionId/questions/new': {
-      id: '/collections/$collectionId/questions/new'
+    '/_main/collections/$collectionId/questions/new': {
+      id: '/_main/collections/$collectionId/questions/new'
       path: '/collections/$collectionId/questions/new'
       fullPath: '/collections/$collectionId/questions/new'
-      preLoaderRoute: typeof CollectionsCollectionIdQuestionsNewRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof MainCollectionsCollectionIdQuestionsNewRouteImport
+      parentRoute: typeof MainRouteRoute
     }
-    '/collections/$collectionId/questions/$questionId/update': {
-      id: '/collections/$collectionId/questions/$questionId/update'
+    '/_main/collections/$collectionId/questions/$questionId/update': {
+      id: '/_main/collections/$collectionId/questions/$questionId/update'
       path: '/collections/$collectionId/questions/$questionId/update'
       fullPath: '/collections/$collectionId/questions/$questionId/update'
-      preLoaderRoute: typeof CollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport
+      parentRoute: typeof MainRouteRoute
     }
   }
 }
 
+interface MainRouteRouteChildren {
+  MainCollectionsCollectionIdIndexRoute: typeof MainCollectionsCollectionIdIndexRoute
+  MainCollectionsCollectionIdQuestionsNewRoute: typeof MainCollectionsCollectionIdQuestionsNewRoute
+  MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute: typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
+}
+
+const MainRouteRouteChildren: MainRouteRouteChildren = {
+  MainCollectionsCollectionIdIndexRoute: MainCollectionsCollectionIdIndexRoute,
+  MainCollectionsCollectionIdQuestionsNewRoute:
+    MainCollectionsCollectionIdQuestionsNewRoute,
+  MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute:
+    MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute,
+}
+
+const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(
+  MainRouteRouteChildren,
+)
+
+interface PracticeRouteRouteChildren {
+  PracticeQuestionRoute: typeof PracticeQuestionRoute
+  PracticeReviewRoute: typeof PracticeReviewRoute
+}
+
+const PracticeRouteRouteChildren: PracticeRouteRouteChildren = {
+  PracticeQuestionRoute: PracticeQuestionRoute,
+  PracticeReviewRoute: PracticeReviewRoute,
+}
+
+const PracticeRouteRouteWithChildren = PracticeRouteRoute._addFileChildren(
+  PracticeRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CollectionsCollectionIdIndexRoute: CollectionsCollectionIdIndexRoute,
-  CollectionsCollectionIdQuestionsNewRoute:
-    CollectionsCollectionIdQuestionsNewRoute,
-  CollectionsCollectionIdQuestionsQuestionIdUpdateRoute:
-    CollectionsCollectionIdQuestionsQuestionIdUpdateRoute,
+  MainRouteRoute: MainRouteRouteWithChildren,
+  PracticeRouteRoute: PracticeRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

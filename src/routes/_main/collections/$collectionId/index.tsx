@@ -24,7 +24,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { CiCircleQuestion, CiStickyNote } from "react-icons/ci";
 
-export const Route = createFileRoute("/collections/$collectionId/")({
+export const Route = createFileRoute("/_main/collections/$collectionId/")({
   component: CollectionDetailsPage,
 });
 
@@ -119,7 +119,7 @@ function CollectionDetailsPage() {
             <QuestionsTabConent />
           </Tabs.Content>
           <Tabs.Content value="tests">
-            <PracticeSessionsTabContent />
+            <PracticeSessionsTabContent collection={collection} />
           </Tabs.Content>
         </Tabs.Root>
       </Container>

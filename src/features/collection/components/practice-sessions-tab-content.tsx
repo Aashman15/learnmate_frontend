@@ -1,10 +1,20 @@
+import ConfirmPracticeNowDialog from "@/features/practice-session/components/confirm-practice-now-dialog";
 import PracticeSessionCard from "@/features/practice-session/components/practice-session-card";
 import { Button, SimpleGrid, Stack } from "@chakra-ui/react";
+import type { CollectionDto } from "../dtos/CollectionDto";
 
-export default function PracticeSessionsTabContent() {
+type PracticeSessionsTabContentProps = {
+  collection: CollectionDto;
+};
+
+export default function PracticeSessionsTabContent({
+  collection,
+}: PracticeSessionsTabContentProps) {
   return (
     <Stack gap={8} alignItems={"flex-start"}>
-      <Button>Practice Now</Button>
+      <ConfirmPracticeNowDialog collection={collection}>
+        <Button disabled={collection.questionCount < 1}>Practice Now</Button>
+      </ConfirmPracticeNowDialog>
       <SimpleGrid
         columns={{
           base: 1,

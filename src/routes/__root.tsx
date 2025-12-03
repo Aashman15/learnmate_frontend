@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/navbar";
 import { Provider } from "@/components/ui/provider";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -11,7 +10,6 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <Provider enableSystem={false} defaultTheme="light">
-      <Navbar />
       <Outlet />
       <Toaster />
     </Provider>

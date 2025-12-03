@@ -46,9 +46,7 @@ export default function PracticeSessionCard() {
               <HStack>
                 <CiClock2 /> <Text>Duration</Text>
               </HStack>
-              <Text fontWeight={"bold"} color={"black"}>
-                45 mins
-              </Text>
+              <Text fontWeight={"bold"}>45 mins</Text>
             </Flex>
           </Card.Description>
         </Stack>
@@ -59,9 +57,7 @@ export default function PracticeSessionCard() {
         <Box width={"full"}>
           <Card.Description display={"flex"} justifyContent={"space-between"}>
             <Text>Questions Answered</Text>
-            <Text fontWeight={"bold"} color={"black"}>
-              48/50
-            </Text>
+            <Text fontWeight={"bold"}>48/50</Text>
           </Card.Description>
           <SimpleGrid columns={2} mt={8}>
             <Stack>

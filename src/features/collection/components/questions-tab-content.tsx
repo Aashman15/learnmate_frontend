@@ -21,7 +21,7 @@ export default function QuestionsTabConent() {
     useDeleteQuestion();
 
   const { collectionId } = useParams({
-    from: "/collections/$collectionId/",
+    from: "/_main/collections/$collectionId/",
   });
 
   const { data: questions } = useSuspenseQuery(
