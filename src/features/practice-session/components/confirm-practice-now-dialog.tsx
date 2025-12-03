@@ -29,7 +29,7 @@ export default function ConfirmPracticeNowDialog({
 }: ConfirmPracticeNowDialogProps) {
   const navigate = useNavigate();
 
-  const { setItems, setPracticeId, setInputMode, inputMode } =
+  const { setItems, setPracticeId, setCollectionId, setInputMode, inputMode } =
     usePracticeStore();
 
   const { mutateAsync: startPracticeAsync, isPending } =
@@ -41,8 +41,6 @@ export default function ConfirmPracticeNowDialog({
         collectionId: collection.id,
       });
 
-      setPracticeId(practiceId);
-
       if (items.length === 0) {
         toaster.create({
           type: "error",
@@ -50,7 +48,8 @@ export default function ConfirmPracticeNowDialog({
         });
         return;
       }
-
+      setPracticeId(practiceId);
+      setCollectionId(collection.id);
       setItems(
         items.map((item) => ({
           answer: "",

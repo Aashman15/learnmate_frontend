@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import type { PracticeItemWithAnswer } from "../dtos/PracticeItemWithAnswer";
 import type { PracticeInputMode } from "../practice-types";
-
 interface PracticeState {
+  collectionId: number | null;
   practiceId: number | null;
   inputMode: PracticeInputMode;
   items: PracticeItemWithAnswer[];
@@ -15,14 +15,17 @@ interface PracticeStateActions {
   moveToNext: () => void;
   moveToPrevious: () => void;
   setPracticeId: (practiceId: number) => void;
+  setCollectionId: (collectionId: number) => void;
   setInputMode: (inputMode: PracticeInputMode) => void;
   setItems: (items: PracticeItemWithAnswer[]) => void;
   setCurrentIndex: (index: number) => void;
   setCurrentItemAnswer: (answer: string) => void;
+  resetState: () => void;
 }
 
 export const usePracticeStore = create<PracticeState & PracticeStateActions>(
   (set, get) => ({
+    collectionId: null,
     practiceId: null,
     inputMode: "text",
     currentIndex: 0,
@@ -57,6 +60,11 @@ export const usePracticeStore = create<PracticeState & PracticeStateActions>(
         practiceId,
       });
     },
+    setCollectionId: (collectionId: number) => {
+      set({
+        collectionId,
+      });
+    },
 
     setInputMode: (inputMode: PracticeInputMode) => {
       set({
@@ -86,6 +94,14 @@ export const usePracticeStore = create<PracticeState & PracticeStateActions>(
         return {
           items: newItems,
         };
+      });
+    },
+    resetState: () => {
+      set({
+        currentIndex: 0,
+        practiceId: null,
+        inputMode: "text",
+        items: [],
       });
     },
   })
