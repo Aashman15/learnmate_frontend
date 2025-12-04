@@ -4,6 +4,7 @@ import type { PracticeStartResponse } from "./dtos/PracticeStartResponse";
 import type { PracticeItemBaseDto } from "./dtos/PracticeItemBaseDto";
 import type { PracticeSubmitRequest } from "./dtos/PracticeSubmitRequest";
 import type { PracticeSubmitResponse } from "./dtos/PracticeSubmitResponse";
+import type { PracticeBaseDto } from "./dtos/PracticeBaseDto";
 
 export async function startPractice(request: PracticeStartRequest) {
   const startPracticeResponse = await api.post<PracticeStartResponse>(
@@ -36,5 +37,10 @@ export async function submitPractice(
     `/practices/${practiceId}/submit`,
     request
   );
+  return response.data;
+}
+
+export async function getPractices() {
+  const response = await api.get<PracticeBaseDto[]>(`/practices`);
   return response.data;
 }

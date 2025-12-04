@@ -1,6 +1,7 @@
 import { GET_COLLECTION_BY_ID_QO } from "@/features/collection/collection.hooks";
 import ConfirmPracticeNowDialog from "@/features/practice-session/components/confirm-practice-now-dialog";
 import PracticeSessionCard from "@/features/practice-session/components/practice-card";
+import { getPracticesQO } from "@/features/practice-session/practice.hooks";
 import { Button, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -18,6 +19,8 @@ export default function PracticeSessionsTabContent() {
     GET_COLLECTION_BY_ID_QO(Number(collectionId))
   );
 
+  const { data: practices } = useSuspenseQuery(getPracticesQO());
+
   return (
     <Stack gap={8} alignItems={"flex-start"}>
       <ConfirmPracticeNowDialog collection={collection}>
@@ -33,18 +36,9 @@ export default function PracticeSessionsTabContent() {
         rowGap={4}
         width={"full"}
       >
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
-        <PracticeSessionCard />
+        {practices.map((practice) => (
+          <PracticeSessionCard key={practice.id} practice={practice} />
+        ))}
       </SimpleGrid>
     </Stack>
   );

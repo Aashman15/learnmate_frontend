@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { usePracticeStore } from "../store/practice-store";
 import { useMutation } from "@tanstack/react-query";
-import { SUBMIT_PRACTICE_MO } from "../practice.hooks";
+import { getSubmitPracticeMO } from "../practice.hooks";
 import { toaster } from "@/components/ui/toaster";
 import { getErrorMessage } from "@/utils/error.utils";
 
@@ -17,8 +17,9 @@ export default function ConfirmPracticeDialog({
   const navigate = useNavigate();
   const { collectionId, practiceId, items } = usePracticeStore();
 
-  const { mutateAsync: submitPractice, isPending } =
-    useMutation(SUBMIT_PRACTICE_MO);
+  const { mutateAsync: submitPractice, isPending } = useMutation(
+    getSubmitPracticeMO()
+  );
 
   const onSubmit = async () => {
     try {

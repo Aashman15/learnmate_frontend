@@ -15,7 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import type { PracticeInputMode } from "../practice-types";
-import { START_PRACTICE_MO } from "../practice.hooks";
+import { getStartPracticeMO } from "../practice.hooks";
 import { usePracticeStore } from "../store/practice-store";
 
 type ConfirmPracticeNowDialogProps = {
@@ -33,7 +33,7 @@ export default function ConfirmPracticeNowDialog({
     usePracticeStore();
 
   const { mutateAsync: startPracticeAsync, isPending } =
-    useMutation(START_PRACTICE_MO);
+    useMutation(getStartPracticeMO);
 
   const onStartPractice = async () => {
     try {
