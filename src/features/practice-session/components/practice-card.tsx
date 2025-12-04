@@ -1,12 +1,9 @@
-import Divider from "@/components/divider";
 import {
   Badge,
-  Box,
   Card,
   Flex,
   HStack,
   IconButton,
-  SimpleGrid,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -39,46 +36,20 @@ export default function PracticeSessionCard() {
                 <CiCalendar /> <Text>Nov 8, 2025</Text>
               </HStack>
             </Card.Description>
-            <Card.Description>10:30 AM - 11:15 AM</Card.Description>
+            <Card.Description>
+              <HStack>
+                <CiClock2 /> <Text>10:30 AM</Text>
+              </HStack>
+            </Card.Description>
           </Stack>
           <Card.Description>
             <Flex justifyContent={"space-between"} alignItems={"center"}>
-              <HStack>
-                <CiClock2 /> <Text>Duration</Text>
-              </HStack>
-              <Text fontWeight={"bold"}>45 mins</Text>
+              <Text>Questions Answered</Text>
+              <Text fontWeight={"bold"}>48/50</Text>
             </Flex>
           </Card.Description>
         </Stack>
-        <Divider />
       </Card.Body>
-
-      <Card.Footer>
-        <Box width={"full"}>
-          <Card.Description display={"flex"} justifyContent={"space-between"}>
-            <Text>Questions Answered</Text>
-            <Text fontWeight={"bold"}>48/50</Text>
-          </Card.Description>
-          <SimpleGrid columns={2} mt={8}>
-            <Stack>
-              <Text fontSize={"xs"} fontWeight={"light"}>
-                AI Score
-              </Text>
-              <Text fontSize={"2xl"} fontWeight={"bold"}>
-                92%
-              </Text>
-            </Stack>
-            <Stack>
-              <Text fontSize={"xs"} fontWeight={"light"}>
-                Your Score
-              </Text>
-              <Text fontSize={"2xl"} fontWeight={"bold"}>
-                88%
-              </Text>
-            </Stack>
-          </SimpleGrid>
-        </Box>
-      </Card.Footer>
     </Card.Root>
   );
 }

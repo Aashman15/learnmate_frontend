@@ -58,7 +58,7 @@ export default function CollectionCard({ collection }: Props) {
         }}
         onClick={() =>
           navigate({
-            to: "/collections/$collectionId",
+            to: "/collections/$collectionId/questions",
             params: { collectionId: collection.id.toString() },
           })
         }

@@ -34,7 +34,7 @@ export default function ConfirmPracticeDialog({
         description: "Practice submitted successfully",
       });
       navigate({
-        to: "/collections/$collectionId",
+        to: "/collections/$collectionId/practices",
         params: {
           collectionId: String(collectionId),
         },

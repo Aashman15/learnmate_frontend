@@ -16,7 +16,7 @@ export default function ConfirmExitPracticeDialog({
   const onExitClick = () => {
     // todo delete practice and its items from server
     navigate({
-      to: "/collections/$collectionId",
+      to: "/collections/$collectionId/practices",
       params: { collectionId: String(collectionId) },
     });
   };

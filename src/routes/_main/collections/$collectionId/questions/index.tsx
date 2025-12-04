@@ -1,14 +1,20 @@
+import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
+import { toaster } from "@/components/ui/toaster";
+import { createQOForQuestionsByCollectionId } from "@/features/collection/collection.hooks";
+import { useDeleteQuestion } from "@/features/question/question.hooks";
+import { getErrorMessage } from "@/utils/error.utils";
 import { Accordion, Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { createQOForQuestionsByCollectionId } from "../collection.hooks";
-import { useDeleteQuestion } from "@/features/question/question.hooks";
-import { toaster } from "@/components/ui/toaster";
-import { getErrorMessage } from "@/utils/error.utils";
-import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
 
-export default function QuestionsTabConent() {
+export const Route = createFileRoute(
+  "/_main/collections/$collectionId/questions/"
+)({
+  component: CollectionQuestionsPage,
+});
+
+export default function CollectionQuestionsPage() {
   const navigate = useNavigate();
 
   const [showAnswers, setShowAnswers] = useState(false);
@@ -20,9 +26,7 @@ export default function QuestionsTabConent() {
   const { mutateAsync: deleteQuestion, isPending: isDeleting } =
     useDeleteQuestion();
 
-  const { collectionId } = useParams({
-    from: "/_main/collections/$collectionId/",
-  });
+  const { collectionId } = Route.useParams();
 
   const { data: questions } = useSuspenseQuery(
     createQOForQuestionsByCollectionId(Number(collectionId))

@@ -1,14 +1,10 @@
-import CircularProgress from "@/components/circular-progress";
 import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
-import MyAlert from "@/components/my-alert";
 import { toaster } from "@/components/ui/toaster";
 import {
+  GET_COLLECTION_BY_ID_QO,
   useDeleteCollection,
-  useGetCollectionById,
 } from "@/features/collection/collection.hooks";
 import CollectionUpdateDialog from "@/features/collection/components/collection-update-dialog";
-import PracticeSessionsTabContent from "@/features/collection/components/practice-sessions-tab-content";
-import QuestionsTabConent from "@/features/collection/components/questions-tab-content";
 import { getErrorMessage } from "@/utils/error.utils";
 import {
   Box,
@@ -20,16 +16,23 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  createFileRoute,
+  Outlet,
+  useNavigate,
+  useRouterState,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import { CiCircleQuestion, CiStickyNote } from "react-icons/ci";
 
-export const Route = createFileRoute("/_main/collections/$collectionId/")({
-  component: CollectionDetailsPage,
+export const Route = createFileRoute("/_main/collections/$collectionId")({
+  component: CollectionDetailsPageLayout,
 });
 
-function CollectionDetailsPage() {
+function CollectionDetailsPageLayout() {
   const navigate = useNavigate();
+  const pathname = useRouterState().location.pathname;
 
   const { collectionId } = Route.useParams();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -38,11 +41,9 @@ function CollectionDetailsPage() {
   const { mutateAsync: deleteCollection, isPending: isDeleting } =
     useDeleteCollection();
 
-  const {
-    data: collection,
-    status,
-    error,
-  } = useGetCollectionById(Number(collectionId));
+  const { data: collection } = useSuspenseQuery(
+    GET_COLLECTION_BY_ID_QO(Number(collectionId))
+  );
 
   const onDeleteCollection = async () => {
     try {
@@ -64,21 +65,23 @@ function CollectionDetailsPage() {
     }
   };
 
-  if (status === "pending") {
-    return (
-      <Container mt={10}>
-        <CircularProgress />
-      </Container>
-    );
-  }
-
-  if (status === "error") {
-    return (
-      <Container mt={10}>
-        <MyAlert description={getErrorMessage(error)} status={"error"} />
-      </Container>
-    );
-  }
+  const onTabChange = (tab: string) => {
+    if (tab === "practices") {
+      navigate({
+        to: "/collections/$collectionId/practices",
+        params: {
+          collectionId,
+        },
+      });
+    } else {
+      navigate({
+        to: "/collections/$collectionId/questions",
+        params: {
+          collectionId,
+        },
+      });
+    }
+  };
 
   return (
     <>
@@ -105,21 +108,28 @@ function CollectionDetailsPage() {
             </Button>
           </HStack>
         </Stack>
-        <Tabs.Root defaultValue={"questions"} mt={5} pb={"16"}>
+        <Tabs.Root
+          defaultValue={
+            pathname.includes("practices") ? "practices" : "questions"
+          }
+          onValueChange={(d) => onTabChange(d.value)}
+          mt={5}
+          pb={"16"}
+        >
           <Tabs.List>
             <Tabs.Trigger value="questions">
               <CiCircleQuestion /> Questions
             </Tabs.Trigger>
-            <Tabs.Trigger value="tests">
+            <Tabs.Trigger value="practices">
               <CiStickyNote />
               Practices
             </Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content value="questions">
-            <QuestionsTabConent />
+            <Outlet />
           </Tabs.Content>
-          <Tabs.Content value="tests">
-            <PracticeSessionsTabContent collection={collection} />
+          <Tabs.Content value="practices">
+            <Outlet />
           </Tabs.Content>
         </Tabs.Root>
       </Container>

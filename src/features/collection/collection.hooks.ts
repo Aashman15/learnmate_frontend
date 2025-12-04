@@ -2,9 +2,9 @@ import {
   queryOptions,
   useInfiniteQuery,
   useMutation,
-  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { collectionKeys } from "./collection-keys";
 import {
   createCollection,
   deleteCollection,
@@ -13,7 +13,6 @@ import {
   getQuestionsByCollectionId,
   updateCollection,
 } from "./collection.api";
-import { collectionKeys } from "./collection-keys";
 import type { CollectionSearchRequest } from "./dtos/CollectionSearchRequest";
 import type { CollectionFormValues } from "./schema/collection-form-schema";
 
@@ -73,12 +72,11 @@ export function useGetCollections(request: CollectionSearchRequest) {
   });
 }
 
-export function useGetCollectionById(id: number) {
-  return useQuery({
-    queryKey: collectionKeys.byId(id),
-    queryFn: () => getCollectionById(id),
+export const GET_COLLECTION_BY_ID_QO = (collectionId: number) =>
+  queryOptions({
+    queryKey: collectionKeys.byId(collectionId),
+    queryFn: () => getCollectionById(collectionId),
   });
-}
 
 export function createQueryOptionsForCollectionById(collectionId: number) {
   return queryOptions({
