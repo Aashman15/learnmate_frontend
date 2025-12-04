@@ -11,13 +11,10 @@ export default function ConfirmExitPracticeDialog({
   children,
 }: ConfirmExitPracticeDialogProps) {
   const navigate = useNavigate();
-  const resetState = usePracticeStore((state) => state.resetState);
   const collectionId = usePracticeStore((state) => state.collectionId);
 
   const onExitClick = () => {
-    resetState();
     // todo delete practice and its items from server
-
     navigate({
       to: "/collections/$collectionId",
       params: { collectionId: String(collectionId) },

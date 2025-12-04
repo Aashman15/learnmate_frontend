@@ -1,8 +1,9 @@
 import { MyLink } from "@/components/my-link";
 import { ColorModeButton } from "@/components/ui/color-mode";
 import { Button, Flex, HStack } from "@chakra-ui/react";
-import Timer from "./timer";
 import ConfirmExitPracticeDialog from "./confirm-exit-practice-dialog";
+import ConfirmPracticeDialog from "./confirm-practice-dialog";
+import Timer from "./timer";
 
 export default function PracticeNav() {
   return (
@@ -34,7 +35,9 @@ export default function PracticeNav() {
           Review
         </MyLink>
 
-        <Button>Submit Practice</Button>
+        <ConfirmPracticeDialog>
+          <Button>Submit Practice</Button>
+        </ConfirmPracticeDialog>
       </HStack>
     </Flex>
   );

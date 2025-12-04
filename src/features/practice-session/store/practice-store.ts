@@ -20,7 +20,6 @@ interface PracticeStateActions {
   setItems: (items: PracticeItemWithAnswer[]) => void;
   setCurrentIndex: (index: number) => void;
   setCurrentItemAnswer: (answer: string) => void;
-  resetState: () => void;
 }
 
 export const usePracticeStore = create<PracticeState & PracticeStateActions>(
@@ -94,14 +93,6 @@ export const usePracticeStore = create<PracticeState & PracticeStateActions>(
         return {
           items: newItems,
         };
-      });
-    },
-    resetState: () => {
-      set({
-        currentIndex: 0,
-        practiceId: null,
-        inputMode: "text",
-        items: [],
       });
     },
   })
