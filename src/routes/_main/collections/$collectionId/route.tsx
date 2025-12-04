@@ -35,7 +35,6 @@ function CollectionDetailsPageLayout() {
   const pathname = useRouterState().location.pathname;
 
   const { collectionId } = Route.useParams();
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
   const { mutateAsync: deleteCollection, isPending: isDeleting } =
@@ -60,8 +59,6 @@ function CollectionDetailsPageLayout() {
         description: getErrorMessage(error),
         type: "error",
       });
-    } finally {
-      setIsDeleteDialogOpen(false);
     }
   };
 
@@ -99,13 +96,15 @@ function CollectionDetailsPageLayout() {
             >
               Update Collection
             </Button>
-            <Button
-              variant={"outline"}
-              color={"red.500"}
-              onClick={() => setIsDeleteDialogOpen(true)}
+            <DeleteConfirmationDialog
+              description="This action cannot be undone. This will permanently delete the collection and its data like tests and questions."
+              onDelete={onDeleteCollection}
+              isDeleting={isDeleting}
             >
-              Delete Collection
-            </Button>
+              <Button variant={"outline"} color={"red.500"}>
+                Delete Collection
+              </Button>
+            </DeleteConfirmationDialog>
           </HStack>
         </Stack>
         <Tabs.Root
@@ -138,14 +137,6 @@ function CollectionDetailsPageLayout() {
         open={isUpdateDialogOpen}
         onOpenChange={setIsUpdateDialogOpen}
         collection={collection}
-      />
-
-      <DeleteConfirmationDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-        description="This action cannot be undone. This will permanently delete the collection and its data like tests and questions."
-        onDelete={onDeleteCollection}
-        isDeleting={isDeleting}
       />
     </>
   );

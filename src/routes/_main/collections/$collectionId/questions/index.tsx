@@ -19,10 +19,7 @@ export default function CollectionQuestionsPage() {
 
   const [showAnswers, setShowAnswers] = useState(false);
   const [showActions, setShowActions] = useState(false);
-  const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(
-    null
-  );
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
   const { mutateAsync: deleteQuestion, isPending: isDeleting } =
     useDeleteQuestion();
 
@@ -51,11 +48,11 @@ export default function CollectionQuestionsPage() {
     });
   };
 
-  const onDeleteQuestion = async () => {
+  const onDeleteQuestion = async (questionId: number) => {
     try {
       const response = await deleteQuestion({
         collectionId: +collectionId,
-        questionId: selectedQuestionId!,
+        questionId,
       });
       toaster.create({
         description: response.message,
@@ -66,8 +63,6 @@ export default function CollectionQuestionsPage() {
         description: getErrorMessage(error),
         type: "error",
       });
-    } finally {
-      setIsDeleteDialogOpen(false);
     }
   };
 
@@ -89,16 +84,6 @@ export default function CollectionQuestionsPage() {
             {showActions ? "Hide Actions" : "Show Actions"}
           </Button>
         </HStack>
-        {/* <Stack mt={4} gap={4}>
-        {questions.map((question, index) => (
-          <QuestionCard
-            key={question.id}
-            questionNumber={index + 1}
-            question={question}
-            collectionId={Number(collectionId)}
-          />
-        ))}
-      </Stack> */}
         <Accordion.Root
           mt={4}
           multiple
@@ -127,16 +112,15 @@ export default function CollectionQuestionsPage() {
                         >
                           Update Question
                         </Button>
-                        <Button
-                          variant={"outline"}
-                          color={"red.500"}
-                          onClick={() => {
-                            setSelectedQuestionId(question.id);
-                            setIsDeleteDialogOpen(true);
-                          }}
+
+                        <DeleteConfirmationDialog
+                          isDeleting={isDeleting}
+                          onDelete={() => onDeleteQuestion(question.id)}
                         >
-                          Delete Question
-                        </Button>
+                          <Button variant={"outline"} color={"red.500"}>
+                            Delete Question
+                          </Button>
+                        </DeleteConfirmationDialog>
                       </HStack>
                     )}
                   </Stack>
@@ -146,12 +130,6 @@ export default function CollectionQuestionsPage() {
           ))}
         </Accordion.Root>
       </Box>
-      <DeleteConfirmationDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-        isDeleting={isDeleting}
-        onDelete={onDeleteQuestion}
-      />
     </>
   );
 }

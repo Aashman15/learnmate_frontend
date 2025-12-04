@@ -1,7 +1,7 @@
 import { GET_COLLECTION_BY_ID_QO } from "@/features/collection/collection.hooks";
 import ConfirmPracticeNowDialog from "@/features/practice-session/components/confirm-practice-now-dialog";
 import PracticeSessionCard from "@/features/practice-session/components/practice-card";
-import { getPracticesQO } from "@/features/practice-session/practice.hooks";
+import { getPracticesQO } from "@/features/practice-session/practice-query-options";
 import { Button, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";

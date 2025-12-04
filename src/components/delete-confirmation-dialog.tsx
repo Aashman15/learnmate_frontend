@@ -1,32 +1,24 @@
 import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
+import type { ReactNode } from "react";
 
 type Props = {
-  open?: boolean;
-  onOpenChange?: (o: boolean) => void;
+  children: ReactNode;
   title?: string;
   description?: string;
-  onCancel?: () => void;
-  onDelete?: () => void;
+  onDelete?: () => Promise<void>;
   isDeleting?: boolean;
 };
 
 export default function DeleteConfirmationDialog({
-  open = false,
-  onOpenChange,
   title = "Are you absolutely sure?",
   description = "This action cannot be undone. This will permanently delete the data.",
-  onCancel = () => {
-    onOpenChange?.(false);
-  },
   onDelete,
   isDeleting = false,
+  children,
 }: Props) {
   return (
-    <Dialog.Root
-      open={open}
-      onOpenChange={(d) => onOpenChange?.(d.open)}
-      closeOnInteractOutside={false}
-    >
+    <Dialog.Root>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
@@ -38,17 +30,24 @@ export default function DeleteConfirmationDialog({
               <p>{description}</p>
             </Dialog.Body>
             <Dialog.Footer>
-              <Button variant="outline" onClick={onCancel}>
-                Cancel
-              </Button>
-              <Button
-                onClick={onDelete}
-                loading={isDeleting}
-                loadingText="Deleting..."
-                bgColor={"red.500"}
-              >
-                Delete
-              </Button>
+              <Dialog.ActionTrigger asChild>
+                <Button variant="outline">Cancel</Button>
+              </Dialog.ActionTrigger>
+              <Dialog.Context>
+                {(store) => (
+                  <Button
+                    onClick={async () => {
+                      await onDelete?.();
+                      store.setOpen(false);
+                    }}
+                    loading={isDeleting}
+                    loadingText="Deleting..."
+                    bgColor={"red.500"}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </Dialog.Context>
             </Dialog.Footer>
             <Dialog.CloseTrigger asChild>
               <CloseButton size="sm" />

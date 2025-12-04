@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { usePracticeStore } from "../store/practice-store";
 import { useMutation } from "@tanstack/react-query";
-import { getSubmitPracticeMO } from "../practice.hooks";
+import { getSubmitPracticeMO } from "../practice-query-options";
 import { toaster } from "@/components/ui/toaster";
 import { getErrorMessage } from "@/utils/error.utils";
 

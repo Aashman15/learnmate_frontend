@@ -1,3 +1,7 @@
+import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
+import { toaster } from "@/components/ui/toaster";
+import { formatIso } from "@/utils/date-time.utils";
+import { getErrorMessage } from "@/utils/error.utils";
 import {
   Badge,
   Card,
@@ -7,11 +11,12 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { AiOutlineDelete } from "react-icons/ai";
 import { CiCalendar, CiClock2 } from "react-icons/ci";
 import { RxText } from "react-icons/rx";
 import type { PracticeBaseDto } from "../dtos/PracticeBaseDto";
-import { formatIso } from "@/utils/date-time.utils";
+import { getDeletePracticeByIdMO } from "../practice-query-options";
 
 interface PracticeSessionCardProps {
   practice: PracticeBaseDto;
@@ -20,6 +25,25 @@ interface PracticeSessionCardProps {
 export default function PracticeSessionCard({
   practice,
 }: PracticeSessionCardProps) {
+  const { mutateAsync: deletePractice, isPending: isDeleting } = useMutation(
+    getDeletePracticeByIdMO()
+  );
+
+  const onDelete = async () => {
+    try {
+      const response = await deletePractice(practice.id);
+      toaster.create({
+        type: "success",
+        description: response.message,
+      });
+    } catch (error) {
+      toaster.create({
+        type: "error",
+        description: getErrorMessage(error),
+      });
+    }
+  };
+
   return (
     <Card.Root width={"full"} variant={"outline"}>
       <Card.Header>
@@ -30,9 +54,14 @@ export default function PracticeSessionCard({
               <RxText />
               Text
             </Badge>
-            <IconButton variant={"ghost"} color={"red"}>
-              <AiOutlineDelete />
-            </IconButton>
+            <DeleteConfirmationDialog
+              onDelete={onDelete}
+              isDeleting={isDeleting}
+            >
+              <IconButton variant={"ghost"} color={"red"}>
+                <AiOutlineDelete />
+              </IconButton>
+            </DeleteConfirmationDialog>
           </HStack>
         </Flex>
       </Card.Header>

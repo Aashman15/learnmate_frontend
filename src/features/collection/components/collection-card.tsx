@@ -15,7 +15,6 @@ type Props = {
 };
 
 export default function CollectionCard({ collection }: Props) {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   const { mutateAsync: deleteCollection, isPending: isDeleting } =
     useDeleteCollection();
@@ -34,14 +33,7 @@ export default function CollectionCard({ collection }: Props) {
         description: getErrorMessage(error),
         type: "error",
       });
-    } finally {
-      setIsDeleteDialogOpen(false);
     }
-  };
-
-  const handleDeleteBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setIsDeleteDialogOpen(true);
   };
 
   const handleUpdateBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -83,13 +75,15 @@ export default function CollectionCard({ collection }: Props) {
               >
                 <FaEdit />
               </IconButton>
-              <IconButton
-                variant={"outline"}
-                size={"sm"}
-                onClick={handleDeleteBtnClick}
+
+              <DeleteConfirmationDialog
+                onDelete={onDeleteCollection}
+                isDeleting={isDeleting}
               >
-                <AiFillDelete />
-              </IconButton>
+                <IconButton variant={"outline"} size={"sm"}>
+                  <AiFillDelete />
+                </IconButton>
+              </DeleteConfirmationDialog>
             </HStack>
           </Flex>
         </Card.Footer>
@@ -100,14 +94,6 @@ export default function CollectionCard({ collection }: Props) {
         open={isUpdateDialogOpen}
         onOpenChange={setIsUpdateDialogOpen}
         collection={collection}
-      />
-
-      <DeleteConfirmationDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-        description="This action cannot be undone. This will permanently delete the collection and its data like tests and questions."
-        onDelete={onDeleteCollection}
-        isDeleting={isDeleting}
       />
     </>
   );

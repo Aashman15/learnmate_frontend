@@ -3,6 +3,7 @@ import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import type { PracticeSubmitRequest } from "./dtos/PracticeSubmitRequest";
 import { practiceKeys } from "./practice-keys";
 import {
+  deletePracticeById,
   getPracticeItems,
   getPractices,
   startPractice,
@@ -40,4 +41,14 @@ export const getPracticesQO = () =>
   queryOptions({
     queryKey: practiceKeys.root,
     queryFn: getPractices,
+  });
+
+export const getDeletePracticeByIdMO = () =>
+  mutationOptions({
+    mutationFn: deletePracticeById,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: practiceKeys.root,
+      });
+    },
   });

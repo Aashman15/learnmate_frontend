@@ -15,7 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import type { PracticeInputMode } from "../practice-types";
-import { getStartPracticeMO } from "../practice.hooks";
+import { getStartPracticeMO } from "../practice-query-options";
 import { usePracticeStore } from "../store/practice-store";
 
 type ConfirmPracticeNowDialogProps = {
