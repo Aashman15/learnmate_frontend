@@ -3,6 +3,7 @@ import { usePracticeStore } from "@/features/practice-session/store/practice-sto
 import { usePreventExit } from "@/hooks/usePreventExit";
 import { Container } from "@chakra-ui/react";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/practice")({
   beforeLoad: () => {
@@ -18,6 +19,14 @@ export const Route = createFileRoute("/practice")({
 
 function PracticeLayout() {
   usePreventExit(true);
+
+  const setCurrentIndex = usePracticeStore((state) => state.setCurrentIndex);
+
+  useEffect(() => {
+    return () => {
+      setCurrentIndex(0);
+    };
+  }, [setCurrentIndex]);
 
   return (
     <Container>
