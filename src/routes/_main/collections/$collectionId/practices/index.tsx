@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { GET_COLLECTION_BY_ID_QO } from "@/features/collection/collection.hooks";
 import ConfirmPracticeNowDialog from "@/features/practice-session/components/confirm-practice-now-dialog";
 import PracticeSessionCard from "@/features/practice-session/components/practice-card";
-import { getPracticesQO } from "@/features/practice-session/practice-query-options";
+import { getPracticesByCollectionIdQO } from "@/features/practice-session/practice-query-options";
 import { Button, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -21,7 +21,9 @@ export default function PracticeSessionsTabContent() {
     GET_COLLECTION_BY_ID_QO(Number(collectionId))
   );
 
-  const { data: practices } = useSuspenseQuery(getPracticesQO());
+  const { data: practices } = useSuspenseQuery(
+    getPracticesByCollectionIdQO(Number(collectionId))
+  );
 
   return (
     <Stack gap={8} alignItems={"flex-start"}>

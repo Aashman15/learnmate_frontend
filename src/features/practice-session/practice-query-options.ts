@@ -7,6 +7,7 @@ import {
   getPracticeById,
   getPracticeItems,
   getPractices,
+  getPracticesByCollectionId,
   startPractice,
   submitPractice,
 } from "./practice.api";
@@ -42,6 +43,12 @@ export const getPracticesQO = () =>
   queryOptions({
     queryKey: practiceKeys.root,
     queryFn: getPractices,
+  });
+
+export const getPracticesByCollectionIdQO = (collectionId: number) =>
+  queryOptions({
+    queryKey: practiceKeys.byCollectionId(collectionId),
+    queryFn: () => getPracticesByCollectionId(collectionId),
   });
 
 export const getDeletePracticeByIdMO = () =>

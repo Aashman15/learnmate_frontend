@@ -47,6 +47,13 @@ export async function getPractices() {
   return response.data;
 }
 
+export async function getPracticesByCollectionId(collectionId: number) {
+  const response = await api.get<PracticeBaseDto[]>(
+    `/collections/${collectionId}/practices`
+  );
+  return response.data;
+}
+
 export async function deletePracticeById(practiceId: number) {
   const response = await api.delete<MessageDto>(`/practices/${practiceId}`);
   return response.data;
