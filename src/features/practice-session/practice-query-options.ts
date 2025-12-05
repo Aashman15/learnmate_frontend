@@ -4,6 +4,7 @@ import type { PracticeSubmitRequest } from "./dtos/PracticeSubmitRequest";
 import { practiceKeys } from "./practice-keys";
 import {
   deletePracticeById,
+  getPracticeById,
   getPracticeItems,
   getPractices,
   startPractice,
@@ -51,4 +52,10 @@ export const getDeletePracticeByIdMO = () =>
         queryKey: practiceKeys.root,
       });
     },
+  });
+
+export const getPracticeByIdQO = (practiceId: number) =>
+  queryOptions({
+    queryKey: practiceKeys.byId(practiceId),
+    queryFn: () => getPracticeById(practiceId),
   });

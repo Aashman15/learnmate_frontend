@@ -1,4 +1,4 @@
-import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
+import DeleteDialog from "@/components/delete-dialog";
 import { toaster } from "@/components/ui/toaster";
 import {
   GET_COLLECTION_BY_ID_QO,
@@ -96,7 +96,7 @@ function CollectionDetailsPageLayout() {
             >
               Update Collection
             </Button>
-            <DeleteConfirmationDialog
+            <DeleteDialog
               description="This action cannot be undone. This will permanently delete the collection and its data like tests and questions."
               onDelete={onDeleteCollection}
               isDeleting={isDeleting}
@@ -104,7 +104,7 @@ function CollectionDetailsPageLayout() {
               <Button variant={"outline"} color={"red.500"}>
                 Delete Collection
               </Button>
-            </DeleteConfirmationDialog>
+            </DeleteDialog>
           </HStack>
         </Stack>
         <Tabs.Root

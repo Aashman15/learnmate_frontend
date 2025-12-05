@@ -9,9 +9,9 @@ type Props = {
   isDeleting?: boolean;
 };
 
-export default function DeleteConfirmationDialog({
-  title = "Are you absolutely sure?",
-  description = "This action cannot be undone. This will permanently delete the data.",
+export default function DeleteDialog({
+  title,
+  description,
   onDelete,
   isDeleting = false,
   children,
@@ -24,10 +24,13 @@ export default function DeleteConfirmationDialog({
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>{title}</Dialog.Title>
+              <Dialog.Title>{title ?? "Are you absolutely sure?"}</Dialog.Title>
             </Dialog.Header>
             <Dialog.Body>
-              <p>{description}</p>
+              <p>
+                {description ??
+                  "This action cannot be undone. This will permanently delete the data."}
+              </p>
             </Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>

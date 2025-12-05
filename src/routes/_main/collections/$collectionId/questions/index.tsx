@@ -1,4 +1,4 @@
-import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
+import DeleteDialog from "@/components/delete-dialog";
 import { toaster } from "@/components/ui/toaster";
 import { createQOForQuestionsByCollectionId } from "@/features/collection/collection.hooks";
 import { useDeleteQuestion } from "@/features/question/question.hooks";
@@ -113,14 +113,14 @@ export default function CollectionQuestionsPage() {
                           Update Question
                         </Button>
 
-                        <DeleteConfirmationDialog
+                        <DeleteDialog
                           isDeleting={isDeleting}
                           onDelete={() => onDeleteQuestion(question.id)}
                         >
                           <Button variant={"outline"} color={"red.500"}>
                             Delete Question
                           </Button>
-                        </DeleteConfirmationDialog>
+                        </DeleteDialog>
                       </HStack>
                     )}
                   </Stack>

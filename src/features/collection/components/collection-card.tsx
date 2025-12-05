@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { useDeleteCollection } from "../collection.hooks";
 import { toaster } from "@/components/ui/toaster";
 import { getErrorMessage } from "@/utils/error.utils";
-import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
+import DeleteDialog from "@/components/delete-dialog";
 import CollectionUpdateDialog from "./collection-update-dialog";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -76,14 +76,14 @@ export default function CollectionCard({ collection }: Props) {
                 <FaEdit />
               </IconButton>
 
-              <DeleteConfirmationDialog
+              <DeleteDialog
                 onDelete={onDeleteCollection}
                 isDeleting={isDeleting}
               >
                 <IconButton variant={"outline"} size={"sm"}>
                   <AiFillDelete />
                 </IconButton>
-              </DeleteConfirmationDialog>
+              </DeleteDialog>
             </HStack>
           </Flex>
         </Card.Footer>

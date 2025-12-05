@@ -15,9 +15,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PracticeReviewRouteImport } from './routes/practice/review'
 import { Route as PracticeQuestionRouteImport } from './routes/practice/question'
 import { Route as MainCollectionsCollectionIdRouteRouteImport } from './routes/_main/collections/$collectionId/route'
-import { Route as MainCollectionsCollectionIdPracticesRouteImport } from './routes/_main/collections/$collectionId/practices'
 import { Route as MainCollectionsCollectionIdQuestionsIndexRouteImport } from './routes/_main/collections/$collectionId/questions/index'
+import { Route as MainCollectionsCollectionIdPracticesIndexRouteImport } from './routes/_main/collections/$collectionId/practices/index'
 import { Route as MainCollectionsCollectionIdQuestionsNewRouteImport } from './routes/_main/collections/$collectionId/questions/new'
+import { Route as MainCollectionsCollectionIdPracticesPracticeIdRouteImport } from './routes/_main/collections/$collectionId/practices/$practiceId'
 import { Route as MainCollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport } from './routes/_main/collections/$collectionId/questions/$questionId.update'
 
 const PracticeRouteRoute = PracticeRouteRouteImport.update({
@@ -50,22 +51,28 @@ const MainCollectionsCollectionIdRouteRoute =
     path: '/collections/$collectionId',
     getParentRoute: () => MainRouteRoute,
   } as any)
-const MainCollectionsCollectionIdPracticesRoute =
-  MainCollectionsCollectionIdPracticesRouteImport.update({
-    id: '/practices',
-    path: '/practices',
-    getParentRoute: () => MainCollectionsCollectionIdRouteRoute,
-  } as any)
 const MainCollectionsCollectionIdQuestionsIndexRoute =
   MainCollectionsCollectionIdQuestionsIndexRouteImport.update({
     id: '/questions/',
     path: '/questions/',
     getParentRoute: () => MainCollectionsCollectionIdRouteRoute,
   } as any)
+const MainCollectionsCollectionIdPracticesIndexRoute =
+  MainCollectionsCollectionIdPracticesIndexRouteImport.update({
+    id: '/practices/',
+    path: '/practices/',
+    getParentRoute: () => MainCollectionsCollectionIdRouteRoute,
+  } as any)
 const MainCollectionsCollectionIdQuestionsNewRoute =
   MainCollectionsCollectionIdQuestionsNewRouteImport.update({
     id: '/questions/new',
     path: '/questions/new',
+    getParentRoute: () => MainCollectionsCollectionIdRouteRoute,
+  } as any)
+const MainCollectionsCollectionIdPracticesPracticeIdRoute =
+  MainCollectionsCollectionIdPracticesPracticeIdRouteImport.update({
+    id: '/practices/$practiceId',
+    path: '/practices/$practiceId',
     getParentRoute: () => MainCollectionsCollectionIdRouteRoute,
   } as any)
 const MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute =
@@ -81,8 +88,9 @@ export interface FileRoutesByFullPath {
   '/practice/question': typeof PracticeQuestionRoute
   '/practice/review': typeof PracticeReviewRoute
   '/collections/$collectionId': typeof MainCollectionsCollectionIdRouteRouteWithChildren
-  '/collections/$collectionId/practices': typeof MainCollectionsCollectionIdPracticesRoute
+  '/collections/$collectionId/practices/$practiceId': typeof MainCollectionsCollectionIdPracticesPracticeIdRoute
   '/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
+  '/collections/$collectionId/practices': typeof MainCollectionsCollectionIdPracticesIndexRoute
   '/collections/$collectionId/questions': typeof MainCollectionsCollectionIdQuestionsIndexRoute
   '/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
@@ -92,8 +100,9 @@ export interface FileRoutesByTo {
   '/practice/question': typeof PracticeQuestionRoute
   '/practice/review': typeof PracticeReviewRoute
   '/collections/$collectionId': typeof MainCollectionsCollectionIdRouteRouteWithChildren
-  '/collections/$collectionId/practices': typeof MainCollectionsCollectionIdPracticesRoute
+  '/collections/$collectionId/practices/$practiceId': typeof MainCollectionsCollectionIdPracticesPracticeIdRoute
   '/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
+  '/collections/$collectionId/practices': typeof MainCollectionsCollectionIdPracticesIndexRoute
   '/collections/$collectionId/questions': typeof MainCollectionsCollectionIdQuestionsIndexRoute
   '/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
@@ -105,8 +114,9 @@ export interface FileRoutesById {
   '/practice/question': typeof PracticeQuestionRoute
   '/practice/review': typeof PracticeReviewRoute
   '/_main/collections/$collectionId': typeof MainCollectionsCollectionIdRouteRouteWithChildren
-  '/_main/collections/$collectionId/practices': typeof MainCollectionsCollectionIdPracticesRoute
+  '/_main/collections/$collectionId/practices/$practiceId': typeof MainCollectionsCollectionIdPracticesPracticeIdRoute
   '/_main/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
+  '/_main/collections/$collectionId/practices/': typeof MainCollectionsCollectionIdPracticesIndexRoute
   '/_main/collections/$collectionId/questions/': typeof MainCollectionsCollectionIdQuestionsIndexRoute
   '/_main/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
@@ -118,8 +128,9 @@ export interface FileRouteTypes {
     | '/practice/question'
     | '/practice/review'
     | '/collections/$collectionId'
-    | '/collections/$collectionId/practices'
+    | '/collections/$collectionId/practices/$practiceId'
     | '/collections/$collectionId/questions/new'
+    | '/collections/$collectionId/practices'
     | '/collections/$collectionId/questions'
     | '/collections/$collectionId/questions/$questionId/update'
   fileRoutesByTo: FileRoutesByTo
@@ -129,8 +140,9 @@ export interface FileRouteTypes {
     | '/practice/question'
     | '/practice/review'
     | '/collections/$collectionId'
-    | '/collections/$collectionId/practices'
+    | '/collections/$collectionId/practices/$practiceId'
     | '/collections/$collectionId/questions/new'
+    | '/collections/$collectionId/practices'
     | '/collections/$collectionId/questions'
     | '/collections/$collectionId/questions/$questionId/update'
   id:
@@ -141,8 +153,9 @@ export interface FileRouteTypes {
     | '/practice/question'
     | '/practice/review'
     | '/_main/collections/$collectionId'
-    | '/_main/collections/$collectionId/practices'
+    | '/_main/collections/$collectionId/practices/$practiceId'
     | '/_main/collections/$collectionId/questions/new'
+    | '/_main/collections/$collectionId/practices/'
     | '/_main/collections/$collectionId/questions/'
     | '/_main/collections/$collectionId/questions/$questionId/update'
   fileRoutesById: FileRoutesById
@@ -197,13 +210,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCollectionsCollectionIdRouteRouteImport
       parentRoute: typeof MainRouteRoute
     }
-    '/_main/collections/$collectionId/practices': {
-      id: '/_main/collections/$collectionId/practices'
-      path: '/practices'
-      fullPath: '/collections/$collectionId/practices'
-      preLoaderRoute: typeof MainCollectionsCollectionIdPracticesRouteImport
-      parentRoute: typeof MainCollectionsCollectionIdRouteRoute
-    }
     '/_main/collections/$collectionId/questions/': {
       id: '/_main/collections/$collectionId/questions/'
       path: '/questions'
@@ -211,11 +217,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCollectionsCollectionIdQuestionsIndexRouteImport
       parentRoute: typeof MainCollectionsCollectionIdRouteRoute
     }
+    '/_main/collections/$collectionId/practices/': {
+      id: '/_main/collections/$collectionId/practices/'
+      path: '/practices'
+      fullPath: '/collections/$collectionId/practices'
+      preLoaderRoute: typeof MainCollectionsCollectionIdPracticesIndexRouteImport
+      parentRoute: typeof MainCollectionsCollectionIdRouteRoute
+    }
     '/_main/collections/$collectionId/questions/new': {
       id: '/_main/collections/$collectionId/questions/new'
       path: '/questions/new'
       fullPath: '/collections/$collectionId/questions/new'
       preLoaderRoute: typeof MainCollectionsCollectionIdQuestionsNewRouteImport
+      parentRoute: typeof MainCollectionsCollectionIdRouteRoute
+    }
+    '/_main/collections/$collectionId/practices/$practiceId': {
+      id: '/_main/collections/$collectionId/practices/$practiceId'
+      path: '/practices/$practiceId'
+      fullPath: '/collections/$collectionId/practices/$practiceId'
+      preLoaderRoute: typeof MainCollectionsCollectionIdPracticesPracticeIdRouteImport
       parentRoute: typeof MainCollectionsCollectionIdRouteRoute
     }
     '/_main/collections/$collectionId/questions/$questionId/update': {
@@ -229,18 +249,21 @@ declare module '@tanstack/react-router' {
 }
 
 interface MainCollectionsCollectionIdRouteRouteChildren {
-  MainCollectionsCollectionIdPracticesRoute: typeof MainCollectionsCollectionIdPracticesRoute
+  MainCollectionsCollectionIdPracticesPracticeIdRoute: typeof MainCollectionsCollectionIdPracticesPracticeIdRoute
   MainCollectionsCollectionIdQuestionsNewRoute: typeof MainCollectionsCollectionIdQuestionsNewRoute
+  MainCollectionsCollectionIdPracticesIndexRoute: typeof MainCollectionsCollectionIdPracticesIndexRoute
   MainCollectionsCollectionIdQuestionsIndexRoute: typeof MainCollectionsCollectionIdQuestionsIndexRoute
   MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute: typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 
 const MainCollectionsCollectionIdRouteRouteChildren: MainCollectionsCollectionIdRouteRouteChildren =
   {
-    MainCollectionsCollectionIdPracticesRoute:
-      MainCollectionsCollectionIdPracticesRoute,
+    MainCollectionsCollectionIdPracticesPracticeIdRoute:
+      MainCollectionsCollectionIdPracticesPracticeIdRoute,
     MainCollectionsCollectionIdQuestionsNewRoute:
       MainCollectionsCollectionIdQuestionsNewRoute,
+    MainCollectionsCollectionIdPracticesIndexRoute:
+      MainCollectionsCollectionIdPracticesIndexRoute,
     MainCollectionsCollectionIdQuestionsIndexRoute:
       MainCollectionsCollectionIdQuestionsIndexRoute,
     MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute:
