@@ -3,6 +3,7 @@ import MyAlert from "@/components/my-alert";
 import { useGetCollections } from "@/features/collection/collection.hooks";
 import CollectionCard from "@/features/collection/components/collection-card";
 import CollectionCreateDialog from "@/features/collection/components/collection-create-dialog";
+import useDebounce from "@/hooks/useDebounce";
 import {
   Button,
   Center,
@@ -16,14 +17,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_main/")({
   component: CollectionsPage,
 });
 
 function CollectionsPage() {
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 700);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage, status } =
     useGetCollections({
+      name: debouncedSearch.trim() === "" ? undefined : debouncedSearch.trim(),
       page: 1,
       pageSize: 20,
     });
@@ -55,7 +59,11 @@ function CollectionsPage() {
       <Container py={10}>
         <Flex justifyContent={"space-between"} alignItems={"center"} gap={"4"}>
           <InputGroup startElement={<CiSearch />} width={"md"}>
-            <Input placeholder="Search collections..." />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search collections..."
+            />
           </InputGroup>
           <Button onClick={() => setIsCreateDialogOpen(true)}>
             Create Collection

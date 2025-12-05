@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PracticeRouteRouteImport } from './routes/practice/route'
 import { Route as MainRouteRouteImport } from './routes/_main/route'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as PracticeReviewRouteImport } from './routes/practice/review'
 import { Route as PracticeQuestionRouteImport } from './routes/practice/question'
 import { Route as MainCollectionsCollectionIdRouteRouteImport } from './routes/_main/collections/$collectionId/route'
@@ -30,10 +30,10 @@ const MainRouteRoute = MainRouteRouteImport.update({
   id: '/_main',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const MainIndexRoute = MainIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => MainRouteRoute,
 } as any)
 const PracticeReviewRoute = PracticeReviewRouteImport.update({
   id: '/review',
@@ -83,10 +83,10 @@ const MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/practice': typeof PracticeRouteRouteWithChildren
   '/practice/question': typeof PracticeQuestionRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/': typeof MainIndexRoute
   '/collections/$collectionId': typeof MainCollectionsCollectionIdRouteRouteWithChildren
   '/collections/$collectionId/practices/$practiceId': typeof MainCollectionsCollectionIdPracticesPracticeIdRoute
   '/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
@@ -95,10 +95,10 @@ export interface FileRoutesByFullPath {
   '/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/practice': typeof PracticeRouteRouteWithChildren
   '/practice/question': typeof PracticeQuestionRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/': typeof MainIndexRoute
   '/collections/$collectionId': typeof MainCollectionsCollectionIdRouteRouteWithChildren
   '/collections/$collectionId/practices/$practiceId': typeof MainCollectionsCollectionIdPracticesPracticeIdRoute
   '/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
@@ -108,11 +108,11 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_main': typeof MainRouteRouteWithChildren
   '/practice': typeof PracticeRouteRouteWithChildren
   '/practice/question': typeof PracticeQuestionRoute
   '/practice/review': typeof PracticeReviewRoute
+  '/_main/': typeof MainIndexRoute
   '/_main/collections/$collectionId': typeof MainCollectionsCollectionIdRouteRouteWithChildren
   '/_main/collections/$collectionId/practices/$practiceId': typeof MainCollectionsCollectionIdPracticesPracticeIdRoute
   '/_main/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
@@ -123,10 +123,10 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/practice'
     | '/practice/question'
     | '/practice/review'
+    | '/'
     | '/collections/$collectionId'
     | '/collections/$collectionId/practices/$practiceId'
     | '/collections/$collectionId/questions/new'
@@ -135,10 +135,10 @@ export interface FileRouteTypes {
     | '/collections/$collectionId/questions/$questionId/update'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/practice'
     | '/practice/question'
     | '/practice/review'
+    | '/'
     | '/collections/$collectionId'
     | '/collections/$collectionId/practices/$practiceId'
     | '/collections/$collectionId/questions/new'
@@ -147,11 +147,11 @@ export interface FileRouteTypes {
     | '/collections/$collectionId/questions/$questionId/update'
   id:
     | '__root__'
-    | '/'
     | '/_main'
     | '/practice'
     | '/practice/question'
     | '/practice/review'
+    | '/_main/'
     | '/_main/collections/$collectionId'
     | '/_main/collections/$collectionId/practices/$practiceId'
     | '/_main/collections/$collectionId/questions/new'
@@ -161,7 +161,6 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   MainRouteRoute: typeof MainRouteRouteWithChildren
   PracticeRouteRoute: typeof PracticeRouteRouteWithChildren
 }
@@ -182,12 +181,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_main/': {
+      id: '/_main/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof MainIndexRouteImport
+      parentRoute: typeof MainRouteRoute
     }
     '/practice/review': {
       id: '/practice/review'
@@ -276,10 +275,12 @@ const MainCollectionsCollectionIdRouteRouteWithChildren =
   )
 
 interface MainRouteRouteChildren {
+  MainIndexRoute: typeof MainIndexRoute
   MainCollectionsCollectionIdRouteRoute: typeof MainCollectionsCollectionIdRouteRouteWithChildren
 }
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
+  MainIndexRoute: MainIndexRoute,
   MainCollectionsCollectionIdRouteRoute:
     MainCollectionsCollectionIdRouteRouteWithChildren,
 }
@@ -303,7 +304,6 @@ const PracticeRouteRouteWithChildren = PracticeRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   MainRouteRoute: MainRouteRouteWithChildren,
   PracticeRouteRoute: PracticeRouteRouteWithChildren,
 }
