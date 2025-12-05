@@ -1,14 +1,14 @@
-import { Badge, Card, Flex, HStack, IconButton } from "@chakra-ui/react";
-import { AiFillDelete } from "react-icons/ai";
-import { FaEdit } from "react-icons/fa";
-import type { CollectionDto } from "../dtos/CollectionDto";
-import React, { useState } from "react";
-import { useDeleteCollection } from "../collection.hooks";
+import ControlledDeleteDialog from "@/components/controlled-delete-dialog";
 import { toaster } from "@/components/ui/toaster";
 import { getErrorMessage } from "@/utils/error.utils";
-import DeleteDialog from "@/components/delete-dialog";
-import CollectionUpdateDialog from "./collection-update-dialog";
+import { Badge, Card, Flex, HStack, IconButton } from "@chakra-ui/react";
 import { useNavigate } from "@tanstack/react-router";
+import React, { useState } from "react";
+import { AiFillDelete } from "react-icons/ai";
+import { FaEdit } from "react-icons/fa";
+import { useDeleteCollection } from "../collection.hooks";
+import type { CollectionDto } from "../dtos/CollectionDto";
+import CollectionUpdateDialog from "./collection-update-dialog";
 
 type Props = {
   collection: CollectionDto;
@@ -16,6 +16,7 @@ type Props = {
 
 export default function CollectionCard({ collection }: Props) {
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { mutateAsync: deleteCollection, isPending: isDeleting } =
     useDeleteCollection();
 
@@ -76,14 +77,16 @@ export default function CollectionCard({ collection }: Props) {
                 <FaEdit />
               </IconButton>
 
-              <DeleteDialog
-                onDelete={onDeleteCollection}
-                isDeleting={isDeleting}
+              <IconButton
+                variant={"outline"}
+                size={"sm"}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDeleteDialogOpen(true);
+                }}
               >
-                <IconButton variant={"outline"} size={"sm"}>
-                  <AiFillDelete />
-                </IconButton>
-              </DeleteDialog>
+                <AiFillDelete />
+              </IconButton>
             </HStack>
           </Flex>
         </Card.Footer>
@@ -94,6 +97,13 @@ export default function CollectionCard({ collection }: Props) {
         open={isUpdateDialogOpen}
         onOpenChange={setIsUpdateDialogOpen}
         collection={collection}
+      />
+
+      <ControlledDeleteDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        onDelete={onDeleteCollection}
+        isDeleting={isDeleting}
       />
     </>
   );

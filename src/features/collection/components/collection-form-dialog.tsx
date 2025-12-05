@@ -43,7 +43,6 @@ export default function CollectionFormDialog({
     <>
       <Dialog.Root
         size={"md"}
-        closeOnInteractOutside={false}
         open={open}
         onOpenChange={(d) => onOpenChange?.(d.open)}
       >
