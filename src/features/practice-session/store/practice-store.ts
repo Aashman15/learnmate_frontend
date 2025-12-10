@@ -26,7 +26,7 @@ export const usePracticeStore = create<PracticeState & PracticeStateActions>(
   (set, get) => ({
     collectionId: null,
     practiceId: null,
-    inputMode: "text",
+    inputMode: "TEXT",
     currentIndex: 0,
     itemFilter: "all",
     items: [],

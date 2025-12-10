@@ -39,6 +39,7 @@ export default function ConfirmPracticeNowDialog({
     try {
       const { practiceId, items } = await startPracticeAsync({
         collectionId: collection.id,
+        inputType: inputMode,
       });
 
       if (items.length === 0) {
@@ -58,7 +59,7 @@ export default function ConfirmPracticeNowDialog({
           question: item.question,
         }))
       );
-      setInputMode("text");
+      setInputMode("TEXT");
       navigate({
         to: "/practice/question",
       });
@@ -89,14 +90,14 @@ export default function ConfirmPracticeNowDialog({
               >
                 <RadioCard.Label>Select mode</RadioCard.Label>
                 <HStack gap={4}>
-                  <RadioCard.Item value={"audio"}>
+                  <RadioCard.Item value={"AUDIO"}>
                     <RadioCard.ItemHiddenInput />
                     <RadioCard.ItemControl>
                       <RadioCard.ItemText>Audio</RadioCard.ItemText>
                       <RadioCard.ItemIndicator />
                     </RadioCard.ItemControl>
                   </RadioCard.Item>
-                  <RadioCard.Item value={"text"}>
+                  <RadioCard.Item value={"TEXT"}>
                     <RadioCard.ItemHiddenInput />
                     <RadioCard.ItemControl>
                       <RadioCard.ItemText>Text</RadioCard.ItemText>
