@@ -86,35 +86,27 @@ export default function PracticeSessionCard({
         <Card.Body>
           <Stack gap={10} mb={5}>
             <Stack gap={2}>
-              <Card.Description>
-                <HStack>
-                  <CiCalendar />{" "}
-                  <Text>
-                    {practice.endTime
-                      ? formatIso(practice.endTime).date
-                      : "No Date"}
-                  </Text>
-                </HStack>
-              </Card.Description>
-              <Card.Description>
-                <HStack>
-                  <CiClock2 />
-                  <Text>
-                    {practice.endTime
-                      ? formatIso(practice.endTime).time
-                      : "No Time"}
-                  </Text>
-                </HStack>
-              </Card.Description>
-            </Stack>
-            <Card.Description>
-              <Flex justifyContent={"space-between"} alignItems={"center"}>
-                <Text>Questions Answered</Text>
-                <Text fontWeight={"bold"}>
-                  {practice.totalAnsweredQuestions}/{practice.totalQuestions}
+              <HStack>
+                <CiCalendar />
+                {practice.endTime
+                  ? formatIso(practice.endTime).date
+                  : "No Date"}
+              </HStack>
+              <HStack>
+                <CiClock2 />
+                <Text>
+                  {practice.endTime
+                    ? formatIso(practice.endTime).time
+                    : "No Time"}
                 </Text>
-              </Flex>
-            </Card.Description>
+              </HStack>
+            </Stack>
+            <Flex justifyContent={"space-between"} alignItems={"center"}>
+              <Text>Questions Answered</Text>
+              <Text fontWeight={"bold"}>
+                {practice.totalAnsweredQuestions}/{practice.totalQuestions}
+              </Text>
+            </Flex>
           </Stack>
         </Card.Body>
       </Card.Root>

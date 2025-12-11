@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { getSubmitPracticeMO } from "../practice-query-options";
 import { toaster } from "@/components/ui/toaster";
 import { getErrorMessage } from "@/utils/error.utils";
+import type { PracticeItemWithAnswer } from "../dtos/PracticeItemWithAnswer";
 
 interface ConfirmPracticeDialogProps {
   children: ReactNode;
@@ -21,13 +22,25 @@ export default function ConfirmPracticeDialog({
     getSubmitPracticeMO()
   );
 
+  const isAnsweredItem = (item: PracticeItemWithAnswer) => {
+    return (
+      (item.answer !== undefined && item.answer.trim() !== "") ||
+      (item.audioUrl !== undefined && item.audioUrl.trim() !== "")
+    );
+  };
+
   const onSubmit = async () => {
     try {
-      const answeredItems = items.filter((item) => item.answer.trim() !== "");
+      const answeredItems = items.filter((item) => isAnsweredItem(item));
+
       await submitPractice({
         practiceId: practiceId!,
         request: {
-          answers: answeredItems,
+          answers: answeredItems.map((item) => ({
+            ...item,
+            audioUrl: item.audioUrl || undefined,
+            answer: item.answer || undefined,
+          })),
         },
       });
       toaster.create({

@@ -54,12 +54,11 @@ export default function ConfirmPracticeNowDialog({
       setItems(
         items.map((item) => ({
           answer: "",
-          answerStatus: "not_answered",
+          audioUrl: "",
           practiceItemId: item.practiceItemId,
           question: item.question,
         }))
       );
-      setInputMode("TEXT");
       navigate({
         to: "/practice/question",
       });
@@ -84,9 +83,9 @@ export default function ConfirmPracticeNowDialog({
             <Dialog.Body>
               <RadioCard.Root
                 value={inputMode}
-                onValueChange={(e) =>
-                  setInputMode(e.value as PracticeInputMode)
-                }
+                onValueChange={(e) => {
+                  setInputMode(e.value as PracticeInputMode);
+                }}
               >
                 <RadioCard.Label>Select mode</RadioCard.Label>
                 <HStack gap={4}>

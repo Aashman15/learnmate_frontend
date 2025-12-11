@@ -34,6 +34,8 @@ export default function CollectionCard({ collection }: Props) {
         description: getErrorMessage(error),
         type: "error",
       });
+    } finally {
+      setIsDeleteDialogOpen(false);
     }
   };
 

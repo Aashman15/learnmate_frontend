@@ -17,9 +17,9 @@ export function useCreateQuestion() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: QuestionFormValues) => createQuestion(data),
-    onSuccess: (_, request) => {
+    onSuccess: (_) => {
       queryClient.invalidateQueries({
-        queryKey: collectionKeys.questionsByCollectionId(request.collectionId),
+        queryKey: collectionKeys.root,
       });
     },
   });

@@ -20,6 +20,7 @@ interface PracticeStateActions {
   setItems: (items: PracticeItemWithAnswer[]) => void;
   setCurrentIndex: (index: number) => void;
   setCurrentItemAnswer: (answer: string) => void;
+  setCurrentItemAudioUrl: (url?: string) => void;
 }
 
 export const usePracticeStore = create<PracticeState & PracticeStateActions>(
@@ -67,7 +68,7 @@ export const usePracticeStore = create<PracticeState & PracticeStateActions>(
 
     setInputMode: (inputMode: PracticeInputMode) => {
       set({
-        inputMode,
+        inputMode: inputMode,
       });
     },
 
@@ -89,6 +90,18 @@ export const usePracticeStore = create<PracticeState & PracticeStateActions>(
         newItems[state.currentIndex] = {
           ...newItems[state.currentIndex],
           answer: answer,
+        };
+        return {
+          items: newItems,
+        };
+      });
+    },
+    setCurrentItemAudioUrl: (url?: string) => {
+      set((state) => {
+        const newItems = [...state.items];
+        newItems[state.currentIndex] = {
+          ...newItems[state.currentIndex],
+          audioUrl: url,
         };
         return {
           items: newItems,

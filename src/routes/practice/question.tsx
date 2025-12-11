@@ -1,3 +1,4 @@
+import AudioInput from "@/features/practice-session/components/audio-input";
 import { usePracticeStore } from "@/features/practice-session/store/practice-store";
 import { Box, Button, Flex, Stack, Text, Textarea } from "@chakra-ui/react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -16,6 +17,7 @@ function PracticeQuestionModePage() {
     currentIndex,
     items,
     setCurrentItemAnswer,
+    inputMode,
   } = usePracticeStore();
 
   return (
@@ -33,14 +35,21 @@ function PracticeQuestionModePage() {
         </Text>
         <Text fontWeight={"bold"}>{items[currentIndex].question}</Text>
       </Stack>
-      <Textarea
-        minHeight={"xs"}
-        maxWidth={"2xl"}
-        mt={4}
-        placeholder="Enter your answer here"
-        value={items[currentIndex].answer}
-        onChange={(e) => setCurrentItemAnswer(e.target.value)}
-      />
+      {inputMode === "TEXT" ? (
+        <Textarea
+          minHeight={"xs"}
+          maxWidth={"2xl"}
+          mt={4}
+          placeholder="Enter your answer here"
+          value={items[currentIndex].answer}
+          onChange={(e) => setCurrentItemAnswer(e.target.value)}
+        />
+      ) : (
+        <Box mt={4}>
+          <AudioInput />
+        </Box>
+      )}
+
       <Flex justifyContent={"end"} mt={4} gap={4}>
         <Button
           variant={"outline"}

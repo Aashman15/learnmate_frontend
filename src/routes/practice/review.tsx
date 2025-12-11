@@ -37,12 +37,12 @@ function PracticeReviewModePage() {
               {index + 1}. {item.question}
             </Text>
 
-            {item.answer.trim() === "" ? (
+            {item.answer?.trim() === "" ? (
               <Text color={"red.500"}>Not Answered</Text>
             ) : (
               <Flex gap={3} alignItems={"center"}>
                 <GrLinkNext />
-                <Text>{item.answer.trim()}</Text>
+                <Text>{item.answer?.trim()}</Text>
               </Flex>
             )}
           </Stack>
