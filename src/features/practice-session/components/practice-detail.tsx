@@ -20,6 +20,10 @@ interface PracticeDetailProps {
 export function PracticeDetail({ practice }: PracticeDetailProps) {
   const router = useRouter();
 
+  const getAudioUrl = (path: string): string => {
+    return import.meta.env.VITE_API_BASE_URL + path;
+  };
+
   return (
     <Stack alignItems={"start"} gap={6} maxWidth={"4xl"} mx={"auto"}>
       <Button variant="ghost" size="sm" onClick={() => router.history.back()}>
@@ -81,9 +85,15 @@ export function PracticeDetail({ practice }: PracticeDetailProps) {
                       Your Answer:
                     </Text>
 
-                    {answer.givenAnswer ? (
+                    {practice.inputType === "AUDIO" && answer.audioUrl && (
+                      <audio controls src={getAudioUrl(answer.audioUrl)} />
+                    )}
+
+                    {practice.inputType === "TEXT" && answer.givenAnswer && (
                       <Text fontSize="sm">{answer.givenAnswer}</Text>
-                    ) : (
+                    )}
+
+                    {!answer.givenAnswer && !answer.audioUrl && (
                       <Text fontSize={"sm"} color={"red.500"}>
                         Not Answered
                       </Text>

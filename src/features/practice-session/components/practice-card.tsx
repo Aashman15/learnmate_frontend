@@ -18,6 +18,7 @@ import { CiCalendar, CiClock2 } from "react-icons/ci";
 import { RxText } from "react-icons/rx";
 import type { PracticeBaseDto } from "../dtos/PracticeBaseDto";
 import { getDeletePracticeByIdMO } from "../practice-query-options";
+import { LiaFileAudio } from "react-icons/lia";
 
 interface PracticeSessionCardProps {
   practice: PracticeBaseDto;
@@ -66,10 +67,18 @@ export default function PracticeSessionCard({
           <Flex justifyContent={"space-between"} alignItems={"center"}>
             <Card.Title>Practice Session</Card.Title>
             <HStack gap={2}>
-              <Badge>
-                <RxText />
-                Text
-              </Badge>
+              {practice.inputType === "TEXT" ? (
+                <Badge>
+                  <RxText />
+                  Text
+                </Badge>
+              ) : (
+                <Badge>
+                  <LiaFileAudio />
+                  Audio
+                </Badge>
+              )}
+
               <IconButton
                 variant={"ghost"}
                 color={"red"}

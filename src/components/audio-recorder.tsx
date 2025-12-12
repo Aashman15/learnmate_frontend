@@ -26,6 +26,7 @@ export default function AudioRecorder(props: AudioRecorderProps) {
   }, [url]);
 
   const startRecording = async () => {
+    chunksRef.current = [];
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const recorder = new MediaRecorder(stream);
 
@@ -35,7 +36,26 @@ export default function AudioRecorder(props: AudioRecorderProps) {
       }
     };
 
-    recorder.start();
+    recorder.onstop = () => {
+      const supportedTypes = [
+        "audio/ogg; codecs=opus",
+        "audio/webm; codecs=opus",
+        "audio/webm",
+      ];
+
+      const chosenType = supportedTypes.find((t) =>
+        MediaRecorder.isTypeSupported(t)
+      );
+
+      if (!chosenType) throw new Error("No supported audio MIME type found");
+
+      const blob = new Blob(chunksRef.current, { type: chosenType });
+      onUpload(blob);
+
+      chunksRef.current = [];
+    };
+
+    recorder.start(100);
     mediaRecorderRef.current = recorder;
     setRecording(true);
   };
@@ -44,27 +64,6 @@ export default function AudioRecorder(props: AudioRecorderProps) {
     mediaRecorderRef.current?.stop();
     mediaRecorderRef.current?.stream.getTracks().forEach((t) => t.stop());
     setRecording(false);
-
-    const supportedTypes = [
-      "audio/ogg; codecs=opus",
-      "audio/webm; codecs=opus",
-      "audio/webm",
-    ];
-
-    let chosenType: string | undefined;
-
-    for (const type of supportedTypes) {
-      if (MediaRecorder.isTypeSupported(type)) {
-        chosenType = type;
-        break;
-      }
-    }
-
-    if (!chosenType) {
-      throw new Error("No supported audio MIME type found for MediaRecorder");
-    }
-
-    onUpload(new Blob(chunksRef.current, { type: chosenType }));
   };
 
   const handleReset = () => {

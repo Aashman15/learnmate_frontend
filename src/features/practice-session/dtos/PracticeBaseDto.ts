@@ -1,4 +1,4 @@
-import type { PracticeStatus } from "../practice-types";
+import type { PracticeInputMode, PracticeStatus } from "../practice-types";
 
 export interface PracticeBaseDto {
   id: number;
@@ -7,4 +7,5 @@ export interface PracticeBaseDto {
   totalQuestions: number;
   totalAnsweredQuestions?: number;
   status: PracticeStatus;
+  inputType: PracticeInputMode;
 }
