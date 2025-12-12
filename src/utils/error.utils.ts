@@ -14,14 +14,20 @@ export function isProblemDetails(error: unknown): error is ProblemDetails {
 export function getErrorMessage(error: unknown): string {
   const genericErrorMessage = "Something went wrong. Please try again later.";
 
-  if (isAxiosError(error)) {
-    const responseData = error.response?.data;
-    if (isProblemDetails(responseData)) {
-      return responseData.detail;
-    } else {
-      return genericErrorMessage;
-    }
-  } else {
+  if (!isAxiosError(error)) {
     return genericErrorMessage;
   }
+
+  const responseData = error.response?.data;
+
+  if (!isProblemDetails(responseData)) {
+    return genericErrorMessage;
+  }
+
+  const fieldErrors = responseData.fieldErrors;
+  if (fieldErrors && fieldErrors.length > 0) {
+    return fieldErrors[0].message;
+  }
+
+  return responseData.detail;
 }
