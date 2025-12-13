@@ -27,14 +27,17 @@ export default function CollectionUpdateDialog({
   const form = useForm<CollectionFormValues>({
     resolver: zodResolver(collectionFormSchema),
     defaultValues: {
-      name: collection.name,
-      description: collection.description,
+      name: collection.name ?? "",
+      description: collection.description ?? "",
     },
   });
   const { reset } = form;
 
   useEffect(() => {
-    reset(collection);
+    reset({
+      name: collection.name ?? "",
+      description: collection.description ?? "",
+    });
   }, [collection, reset]);
 
   const onUpdateCollection = async (formValues: CollectionFormValues) => {

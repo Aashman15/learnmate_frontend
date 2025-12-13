@@ -60,53 +60,57 @@ export default function CollectionFormDialog({
                   </Dialog.Description>
                 </Stack>
               </Dialog.Header>
-              <Dialog.Body>
-                <Fieldset.Root size="lg" maxW="md">
-                  <Fieldset.Content>
-                    <Field.Root invalid={!!errors.name} required>
-                      <Field.Label>
-                        Name{" "}
-                        <Field.RequiredIndicator>*</Field.RequiredIndicator>
-                      </Field.Label>
-                      <Input
-                        placeholder="Enter collection name"
-                        {...register("name")}
-                      />
-                      {errors.name && (
-                        <Field.ErrorText>{errors.name.message}</Field.ErrorText>
-                      )}
-                    </Field.Root>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Dialog.Body>
+                  <Fieldset.Root size="lg" maxW="md">
+                    <Fieldset.Content>
+                      <Field.Root invalid={!!errors.name} required>
+                        <Field.Label>
+                          Name{" "}
+                          <Field.RequiredIndicator>*</Field.RequiredIndicator>
+                        </Field.Label>
+                        <Input
+                          placeholder="Enter collection name"
+                          {...register("name")}
+                        />
+                        {errors.name && (
+                          <Field.ErrorText>
+                            {errors.name.message}
+                          </Field.ErrorText>
+                        )}
+                      </Field.Root>
 
-                    <Field.Root invalid={!!errors.description}>
-                      <Field.Label>Description</Field.Label>
-                      <Input
-                        placeholder="Enter collection description"
-                        {...register("description", {
-                          setValueAs: (v) => (v === "" ? undefined : v),
-                        })}
-                      />
-                      {errors.description && (
-                        <Field.ErrorText>
-                          {errors.description.message}
-                        </Field.ErrorText>
-                      )}
-                    </Field.Root>
-                  </Fieldset.Content>
-                </Fieldset.Root>
-              </Dialog.Body>
-              <Dialog.Footer>
-                <Dialog.ActionTrigger asChild>
-                  <Button variant={"outline"}>Cancel</Button>
-                </Dialog.ActionTrigger>
+                      <Field.Root invalid={!!errors.description}>
+                        <Field.Label>Description</Field.Label>
+                        <Input
+                          placeholder="Enter collection description"
+                          {...register("description", {
+                            setValueAs: (v) => (v === "" ? undefined : v),
+                          })}
+                        />
+                        {errors.description && (
+                          <Field.ErrorText>
+                            {errors.description.message}
+                          </Field.ErrorText>
+                        )}
+                      </Field.Root>
+                    </Fieldset.Content>
+                  </Fieldset.Root>
+                </Dialog.Body>
+                <Dialog.Footer>
+                  <Dialog.ActionTrigger asChild>
+                    <Button variant={"outline"}>Cancel</Button>
+                  </Dialog.ActionTrigger>
 
-                <Button
-                  onClick={handleSubmit(onSubmit)}
-                  loading={isSubmitting}
-                  loadingText={isUpdateMode ? "Updating..." : "Creating..."}
-                >
-                  {isUpdateMode ? "Update" : "Create"}
-                </Button>
-              </Dialog.Footer>
+                  <Button
+                    type="submit"
+                    loading={isSubmitting}
+                    loadingText={isUpdateMode ? "Updating..." : "Creating..."}
+                  >
+                    {isUpdateMode ? "Update" : "Create"}
+                  </Button>
+                </Dialog.Footer>
+              </form>
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="sm" />
               </Dialog.CloseTrigger>

@@ -33,8 +33,8 @@ function UpdateQuestionPage() {
 
   const methods = useForm<QuestionFormValues>({
     defaultValues: {
-      question: question.question,
-      answer: question.answer,
+      question: question.question ?? "",
+      answer: question.answer ?? "",
       collectionId: Number(collectionId),
     },
     resolver: zodResolver(questionFormSchema),

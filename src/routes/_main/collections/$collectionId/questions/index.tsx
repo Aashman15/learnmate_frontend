@@ -3,7 +3,7 @@ import { toaster } from "@/components/ui/toaster";
 import { createQOForQuestionsByCollectionId } from "@/features/collection/collection.hooks";
 import { useDeleteQuestion } from "@/features/question/question.hooks";
 import { getErrorMessage } from "@/utils/error.utils";
-import { Accordion, Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
@@ -84,51 +84,37 @@ export default function CollectionQuestionsPage() {
             {showActions ? "Hide Actions" : "Show Actions"}
           </Button>
         </HStack>
-        <Accordion.Root
-          mt={4}
-          multiple
-          collapsible
-          value={showAnswers ? [...questions.map((q) => String(q.id))] : []}
-          maxWidth={"4xl"}
-        >
-          {questions.map((question, index) => (
-            <Accordion.Item key={index} value={String(question.id)}>
-              <Accordion.ItemTrigger>
-                <Text fontWeight={"bold"} fontSize={"xl"}>
-                  {`${index + 1}. ${question.question}`}
+        <Stack mt={6} gap={4}>
+          {questions.map((question) => (
+            <Box key={question.id}>
+              <Stack>
+                <Text fontWeight={"bold"} fontSize={"2xl"}>
+                  {question.question}
                 </Text>
-              </Accordion.ItemTrigger>
-              <Accordion.ItemContent>
-                <Accordion.ItemBody>
-                  <Stack gap={4}>
-                    <Text>{question.answer}</Text>
-                    {showActions && (
-                      <HStack gap={2}>
-                        <Button
-                          variant={"outline"}
-                          onClick={() =>
-                            onUpdateQuestionClick(String(question.id))
-                          }
-                        >
-                          Update Question
-                        </Button>
+                {showAnswers && <Text>{question.answer}</Text>}
+              </Stack>
+              {showActions && (
+                <HStack gap={2}>
+                  <Button
+                    variant={"outline"}
+                    onClick={() => onUpdateQuestionClick(String(question.id))}
+                  >
+                    Update Question
+                  </Button>
 
-                        <DeleteDialog
-                          isDeleting={isDeleting}
-                          onDelete={() => onDeleteQuestion(question.id)}
-                        >
-                          <Button variant={"outline"} color={"red.500"}>
-                            Delete Question
-                          </Button>
-                        </DeleteDialog>
-                      </HStack>
-                    )}
-                  </Stack>
-                </Accordion.ItemBody>
-              </Accordion.ItemContent>
-            </Accordion.Item>
+                  <DeleteDialog
+                    isDeleting={isDeleting}
+                    onDelete={() => onDeleteQuestion(question.id)}
+                  >
+                    <Button variant={"outline"} color={"red.500"}>
+                      Delete Question
+                    </Button>
+                  </DeleteDialog>
+                </HStack>
+              )}
+            </Box>
           ))}
-        </Accordion.Root>
+        </Stack>
       </Box>
     </>
   );

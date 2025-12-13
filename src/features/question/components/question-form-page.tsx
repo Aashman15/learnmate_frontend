@@ -52,43 +52,45 @@ export default function QuestionFormPage({
         <Text>Please fill the question details below</Text>
       </Stack>
 
-      <Fieldset.Root size="lg" width={"md"} mt={8}>
-        <Fieldset.Content>
-          <Field.Root>
-            <Field.Label>Collection Name</Field.Label>
-            <Input value={collection.name} disabled />
-          </Field.Root>
-          <Field.Root invalid={!!errors.question}>
-            <Field.Label>Question</Field.Label>
-            <Input {...register("question")} placeholder="Enter question" />
-            <Field.ErrorText>{errors.question?.message}</Field.ErrorText>
-          </Field.Root>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Fieldset.Root size="lg" width={"md"} mt={8}>
+          <Fieldset.Content>
+            <Field.Root>
+              <Field.Label>Collection Name</Field.Label>
+              <Input value={collection.name} disabled />
+            </Field.Root>
+            <Field.Root invalid={!!errors.question}>
+              <Field.Label>Question</Field.Label>
+              <Input {...register("question")} placeholder="Enter question" />
+              <Field.ErrorText>{errors.question?.message}</Field.ErrorText>
+            </Field.Root>
 
-          <Field.Root invalid={!!errors.answer}>
-            <Field.Label>Answer</Field.Label>
-            <Textarea
-              placeholder="Enter answer"
-              {...register("answer", {
-                setValueAs: (v) => (v.trim() === "" ? undefined : v),
-              })}
-            />
-            <Field.ErrorText>{errors.answer?.message}</Field.ErrorText>
-          </Field.Root>
-        </Fieldset.Content>
+            <Field.Root invalid={!!errors.answer}>
+              <Field.Label>Answer</Field.Label>
+              <Textarea
+                placeholder="Enter answer"
+                {...register("answer", {
+                  setValueAs: (v) => (v.trim() === "" ? undefined : v),
+                })}
+              />
+              <Field.ErrorText>{errors.answer?.message}</Field.ErrorText>
+            </Field.Root>
+          </Fieldset.Content>
 
-        <HStack>
-          <Button variant={"outline"} onClick={() => router.history.back()}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            loading={isSubmitting}
-            loadingText={isUpdateMode ? "Updating..." : "Creating..."}
-          >
-            {isUpdateMode ? "Update" : "Create"} Question
-          </Button>
-        </HStack>
-      </Fieldset.Root>
+          <HStack>
+            <Button variant={"outline"} onClick={() => router.history.back()}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              loading={isSubmitting}
+              loadingText={isUpdateMode ? "Updating..." : "Creating..."}
+            >
+              {isUpdateMode ? "Update" : "Create"} Question
+            </Button>
+          </HStack>
+        </Fieldset.Root>
+      </form>
     </Container>
   );
 }
