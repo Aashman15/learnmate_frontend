@@ -1,6 +1,6 @@
-import type { PracticeInputMode } from "../practice-types";
+import type { PracticeInputType } from "../practice-types";
 
 export interface PracticeStartRequest {
   collectionId: number;
-  inputType: PracticeInputMode;
+  inputType: PracticeInputType;
 }

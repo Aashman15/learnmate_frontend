@@ -14,7 +14,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { type ReactNode } from "react";
-import type { PracticeInputMode } from "../practice-types";
+import type { PracticeInputType } from "../practice-types";
 import { getStartPracticeMO } from "../practice-query-options";
 import { usePracticeStore } from "../store/practice-store";
 
@@ -84,7 +84,7 @@ export default function ConfirmPracticeNowDialog({
               <RadioCard.Root
                 value={inputMode}
                 onValueChange={(e) => {
-                  setInputMode(e.value as PracticeInputMode);
+                  setInputMode(e.value as PracticeInputType);
                 }}
               >
                 <RadioCard.Label>Select mode</RadioCard.Label>
