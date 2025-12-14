@@ -12,13 +12,13 @@ import { getErrorMessage } from "@/utils/error.utils";
 
 interface MySimpleAudioRecorderProps {
   audioUrl?: string;
-  onSetUrl?: (url: string | undefined) => void;
+  onSetAudioUrl?: (url?: string) => void;
 }
 
 export default function MySimpleAudioRecorder(
   props: MySimpleAudioRecorderProps
 ) {
-  const { audioUrl, onSetUrl } = props;
+  const { audioUrl, onSetAudioUrl } = props;
 
   const { mutateAsync: uploadAudio, isPending: isUploading } = useUploadAudio();
 
@@ -32,7 +32,7 @@ export default function MySimpleAudioRecorder(
     onStop: async (url) => {
       try {
         const response = await uploadAudio(url);
-        onSetUrl?.(response.url);
+        onSetAudioUrl?.(response.url);
       } catch (error) {
         toaster.create({
           type: "error",
@@ -45,7 +45,7 @@ export default function MySimpleAudioRecorder(
   const handleReset = async () => {
     try {
       await deleteAudio(getUploadedFileName());
-      onSetUrl?.(undefined);
+      onSetAudioUrl?.(undefined);
     } catch (error) {
       toaster.create({
         type: "error",
@@ -77,7 +77,7 @@ export default function MySimpleAudioRecorder(
     );
   }
 
-  if (status === "stopped" && !!audioUrl) {
+  if (audioUrl) {
     return (
       <HStack>
         <audio controls src={getUploadedFileCompleteUrl()} />

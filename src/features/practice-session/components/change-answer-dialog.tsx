@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import type { PracticeItemDto } from "../dtos/PracticeItemDto";
 import { useUpdatePracticeItem } from "../practice-item.hooks";
 import type { PracticeInputType } from "../practice-types";
+import MySimpleAudioRecorder from "@/components/my-simple-audio-recorder";
 
 interface ChangeAnswerDialogProps {
   open: boolean;
@@ -23,7 +24,7 @@ export default function ChangeAnswerDialog(props: ChangeAnswerDialogProps) {
   const { open, onOpenChange, inputType, practiceItem } = props;
 
   const [answer, setAnswer] = useState("");
-  const [audioUrl, setAudioUrl] = useState("");
+  const [audioUrl, setAudioUrl] = useState<string | undefined>(undefined);
 
   const { mutateAsync: updatePracticeItem, isPending } =
     useUpdatePracticeItem();
@@ -32,6 +33,10 @@ export default function ChangeAnswerDialog(props: ChangeAnswerDialogProps) {
     if (inputType === "TEXT") {
       setAnswer(practiceItem.givenAnswer ?? "");
     }
+
+    if (inputType === "AUDIO") {
+      setAudioUrl(practiceItem.audioUrl);
+    }
   }, [practiceItem, inputType]);
 
   const handleChangeAnswer = () => {
@@ -39,7 +44,8 @@ export default function ChangeAnswerDialog(props: ChangeAnswerDialogProps) {
       updatePracticeItem({
         practiceItemId: practiceItem.id,
         request: {
-          givenAnswer: answer,
+          givenAnswer: answer.trim() === "" ? undefined : answer.trim(),
+          audioUrl: audioUrl,
         },
       });
       toaster.create({
@@ -60,7 +66,7 @@ export default function ChangeAnswerDialog(props: ChangeAnswerDialogProps) {
       return answer.trim() === "" || isPending;
     }
 
-    return audioUrl.trim() === "" || isPending;
+    return !audioUrl || isPending;
   };
 
   return (
@@ -82,6 +88,13 @@ export default function ChangeAnswerDialog(props: ChangeAnswerDialogProps) {
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
                   placeholder="Enter answer..."
+                />
+              )}
+
+              {inputType === "AUDIO" && (
+                <MySimpleAudioRecorder
+                  audioUrl={audioUrl}
+                  onSetAudioUrl={setAudioUrl}
                 />
               )}
             </Dialog.Body>

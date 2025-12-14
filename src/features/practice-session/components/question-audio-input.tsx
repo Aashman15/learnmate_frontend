@@ -7,7 +7,7 @@ export default function QuestionAudioInput() {
   return (
     <MySimpleAudioRecorder
       audioUrl={items[currentIndex].audioUrl}
-      onSetUrl={setCurrentItemAudioUrl}
+      onSetAudioUrl={setCurrentItemAudioUrl}
     />
   );
 }
