@@ -1,4 +1,4 @@
-import AudioInput from "@/features/practice-session/components/audio-input";
+import QuestionAudioInput from "@/features/practice-session/components/question-audio-input";
 import { usePracticeStore } from "@/features/practice-session/store/practice-store";
 import { Box, Button, Flex, Stack, Text, Textarea } from "@chakra-ui/react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -46,7 +46,7 @@ function PracticeQuestionModePage() {
         />
       ) : (
         <Box mt={4}>
-          <AudioInput />
+          <QuestionAudioInput />
         </Box>
       )}
 

@@ -1,24 +1,21 @@
 import { api } from "@/lib/axios";
 import type { AudioUploadResponse } from "./dtos/AudioUploadResponse";
 import type { MessageDto } from "@/dtos/MessageDto";
+import { blobFromUrl } from "@/utils/file.utils";
+import { getSupportedAudioFormat } from "@/utils/audio.utils";
 
-export const uploadAudio = async (blob: Blob) => {
+export const uploadRecoredAudio = async (url: string) => {
+  const blob = await blobFromUrl(url);
+
+  const file = new File(
+    [blob],
+    `recording.${getSupportedAudioFormat().extension}`,
+    { type: blob.type }
+  );
+
   const formData = new FormData();
+  formData.append("file", file);
 
-  const mimeToExt: Record<string, string> = {
-    "audio/ogg": "ogg",
-    "audio/opus": "ogg",
-    "audio/webm": "webm",
-    "audio/wav": "wav",
-    "audio/mpeg": "mp3",
-  };
-
-  console.log("type");
-
-  console.log(blob.type);
-
-  const ext = mimeToExt[blob.type.split(";")[0].trim()];
-  formData.append("file", blob, `recording.${ext}`);
   const response = await api.post<AudioUploadResponse>(
     "/audios/upload",
     formData,

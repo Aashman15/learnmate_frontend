@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteAudio, uploadAudio } from "./audio.api";
+import { deleteAudio, uploadRecoredAudio } from "./audio.api";
 
 export const useDeleteAudio = () => {
   return useMutation({
@@ -9,6 +9,6 @@ export const useDeleteAudio = () => {
 
 export const useUploadAudio = () => {
   return useMutation({
-    mutationFn: uploadAudio,
+    mutationFn: uploadRecoredAudio,
   });
 };
