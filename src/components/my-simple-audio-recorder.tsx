@@ -1,4 +1,4 @@
-import Timer from "@/features/practice-session/components/timer";
+import Timer from "@/features/practice/components/timer";
 import { Button, HStack } from "@chakra-ui/react";
 import CircularProgress from "./circular-progress";
 import { useReactMediaRecorder } from "react-media-recorder";
@@ -6,7 +6,7 @@ import { getSupportedAudioFormat } from "@/utils/audio.utils";
 import {
   useDeleteAudio,
   useUploadAudio,
-} from "@/features/practice-session/audio.hooks";
+} from "@/features/practice/audio.hooks";
 import { toaster } from "./ui/toaster";
 import { getErrorMessage } from "@/utils/error.utils";
 

@@ -11,11 +11,10 @@ import {
   Span,
   Text,
 } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import type { PracticeInputType } from "../practice-types";
-import { getStartPracticeMO } from "../practice-query-options";
+import { useStartPractice } from "../hooks/practice.hooks";
 import { usePracticeStore } from "../store/practice-store";
 
 type ConfirmPracticeNowDialogProps = {
@@ -32,8 +31,7 @@ export default function ConfirmPracticeNowDialog({
   const { setItems, setPracticeId, setCollectionId, setInputMode, inputMode } =
     usePracticeStore();
 
-  const { mutateAsync: startPracticeAsync, isPending } =
-    useMutation(getStartPracticeMO);
+  const { mutateAsync: startPracticeAsync, isPending } = useStartPractice();
 
   const onStartPractice = async () => {
     try {

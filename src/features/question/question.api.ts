@@ -3,6 +3,8 @@ import type { QuestionFormValues } from "./schema/question-form-schema";
 import type { QuestionBaseDto } from "./dtos/QuestionBaseDto";
 import type { MessageDto } from "@/dtos/MessageDto";
 import type { QuestionDetailDto } from "./dtos/QuestionDetailDto";
+import type { QuestionSearchRequest } from "./dtos/QuestionSearchRequest";
+import type { PaginatedResponse } from "@/dtos/PaginatedResponse";
 
 export async function createQuestion(
   data: QuestionFormValues
@@ -38,3 +40,14 @@ export async function getQuestionById(
   const response = await api.get<QuestionDetailDto>(`/questions/${questionId}`);
   return response.data;
 }
+
+export const getQuestions = async (request: QuestionSearchRequest) => {
+  const response = await api.get<PaginatedResponse<QuestionBaseDto>>(
+    `/questions`,
+    {
+      params: request,
+    }
+  );
+
+  return response.data;
+};

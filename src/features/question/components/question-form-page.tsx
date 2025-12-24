@@ -1,4 +1,4 @@
-import { createQueryOptionsForCollectionById } from "@/features/collection/collection.hooks";
+import { useGetCollectionById } from "@/features/collection/collection.hooks";
 import { type QuestionFormValues } from "@/features/question/schema/question-form-schema";
 import {
   Button,
@@ -12,7 +12,6 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { type UseFormReturn } from "react-hook-form";
 import { RiArrowLeftLine } from "react-icons/ri";
@@ -31,10 +30,7 @@ export default function QuestionFormPage({
   collectionId,
 }: QuestionFormPageProps) {
   const router = useRouter();
-  const { data: collection } = useSuspenseQuery(
-    createQueryOptionsForCollectionById(Number(collectionId))
-  );
-
+  const { data: collection } = useGetCollectionById(Number(collectionId));
   const {
     register,
     formState: { errors, isSubmitting },

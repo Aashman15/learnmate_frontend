@@ -1,12 +1,11 @@
+import { toaster } from "@/components/ui/toaster";
+import { getErrorMessage } from "@/utils/error.utils";
 import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
 import { useNavigate } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { usePracticeStore } from "../store/practice-store";
-import { useMutation } from "@tanstack/react-query";
-import { getSubmitPracticeMO } from "../practice-query-options";
-import { toaster } from "@/components/ui/toaster";
-import { getErrorMessage } from "@/utils/error.utils";
 import type { PracticeItemWithAnswer } from "../dtos/PracticeItemWithAnswer";
+import { useSubmitPractice } from "../hooks/practice.hooks";
+import { usePracticeStore } from "../store/practice-store";
 
 interface ConfirmPracticeDialogProps {
   children: ReactNode;
@@ -18,9 +17,7 @@ export default function ConfirmPracticeDialog({
   const navigate = useNavigate();
   const { collectionId, practiceId, items } = usePracticeStore();
 
-  const { mutateAsync: submitPractice, isPending } = useMutation(
-    getSubmitPracticeMO()
-  );
+  const { mutateAsync: submitPractice, isPending } = useSubmitPractice();
 
   const isAnsweredItem = (item: PracticeItemWithAnswer) => {
     return (

@@ -1,5 +1,5 @@
-import QuestionAudioInput from "@/features/practice-session/components/question-audio-input";
-import { usePracticeStore } from "@/features/practice-session/store/practice-store";
+import QuestionAudioInput from "@/features/practice/components/question-audio-input";
+import { usePracticeStore } from "@/features/practice/store/practice-store";
 import { Box, Button, Flex, Stack, Text, Textarea } from "@chakra-ui/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { GrLinkNext, GrLinkPrevious } from "react-icons/gr";

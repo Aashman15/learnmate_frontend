@@ -1,17 +1,36 @@
 import {
-  queryOptions,
   useMutation,
   useQueryClient,
+  useSuspenseQuery,
 } from "@tanstack/react-query";
-import type { QuestionFormValues } from "./schema/question-form-schema";
+import type { QuestionSearchRequest } from "./dtos/QuestionSearchRequest";
 import {
   createQuestion,
   deleteQuestionById,
   getQuestionById,
+  getQuestions,
   updateQuestion,
 } from "./question.api";
-import { collectionKeys } from "../collection/collection-keys";
-import { questionKeys } from "./question-keys";
+import type { QuestionFormValues } from "./schema/question-form-schema";
+
+// keys
+const questionKeys = {
+  root: ["questions"] as const,
+  list: (request: QuestionSearchRequest) => [
+    ...questionKeys.root,
+    "list",
+    request,
+  ],
+  byId: (questionId: number) => [...questionKeys.root, "byId", questionId],
+};
+
+// hooks
+export const useGetQuestions = (request: QuestionSearchRequest) => {
+  return useSuspenseQuery({
+    queryKey: questionKeys.list(request),
+    queryFn: () => getQuestions(request),
+  });
+};
 
 export function useCreateQuestion() {
   const queryClient = useQueryClient();
@@ -19,7 +38,7 @@ export function useCreateQuestion() {
     mutationFn: (data: QuestionFormValues) => createQuestion(data),
     onSuccess: (_) => {
       queryClient.invalidateQueries({
-        queryKey: collectionKeys.root,
+        queryKey: questionKeys.root,
       });
     },
   });
@@ -35,14 +54,9 @@ export function useUpdateQuestion() {
       questionId: number;
       data: QuestionFormValues;
     }) => updateQuestion(questionId, data),
-    onSuccess: (_, request) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: collectionKeys.questionsByCollectionId(
-          request.data.collectionId
-        ),
-      });
-      queryClient.invalidateQueries({
-        queryKey: questionKeys.byId(request.questionId),
+        queryKey: questionKeys.root,
       });
     },
   });
@@ -58,20 +72,17 @@ export function useDeleteQuestion() {
       questionId: number;
     }) => deleteQuestionById(questionId),
 
-    onSuccess: (_, request) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: collectionKeys.questionsByCollectionId(request.collectionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: questionKeys.byId(request.questionId),
+        queryKey: questionKeys.root,
       });
     },
   });
 }
 
-export function createQOForQuestionById(questionId: number) {
-  return queryOptions({
+export const useGetQuestionById = (questionId: number) => {
+  return useSuspenseQuery({
     queryKey: questionKeys.byId(questionId),
     queryFn: () => getQuestionById(questionId),
   });
-}
+};

@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import type { AudioUploadResponse } from "./dtos/AudioUploadResponse";
+import type { AudioUploadResponse } from "../dtos/AudioUploadResponse";
 import type { MessageDto } from "@/dtos/MessageDto";
 import { blobFromUrl } from "@/utils/file.utils";
 import { getSupportedAudioFormat } from "@/utils/audio.utils";

@@ -1,5 +1,5 @@
-import PracticeNav from "@/features/practice-session/components/practice-nav";
-import { usePracticeStore } from "@/features/practice-session/store/practice-store";
+import PracticeNav from "@/features/practice/components/practice-nav";
+import { usePracticeStore } from "@/features/practice/store/practice-store";
 import { usePreventExit } from "@/hooks/usePreventExit";
 import { Container } from "@chakra-ui/react";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";

@@ -1,4 +1,4 @@
-import { usePracticeStore } from "@/features/practice-session/store/practice-store";
+import { usePracticeStore } from "@/features/practice/store/practice-store";
 import { Box, Button, Flex, Stack, Text } from "@chakra-ui/react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { GrLinkNext } from "react-icons/gr";

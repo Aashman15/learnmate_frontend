@@ -11,14 +11,13 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { CiCalendar, CiClock2 } from "react-icons/ci";
+import { LiaFileAudio } from "react-icons/lia";
 import { RxText } from "react-icons/rx";
 import type { PracticeBaseDto } from "../dtos/PracticeBaseDto";
-import { getDeletePracticeByIdMO } from "../practice-query-options";
-import { LiaFileAudio } from "react-icons/lia";
+import { useDeletePractice } from "../hooks/practice.hooks";
 
 interface PracticeSessionCardProps {
   practice: PracticeBaseDto;
@@ -29,9 +28,8 @@ export default function PracticeSessionCard({
   practice,
   onCardClick,
 }: PracticeSessionCardProps) {
-  const { mutateAsync: deletePractice, isPending: isDeleting } = useMutation(
-    getDeletePracticeByIdMO()
-  );
+  const { mutateAsync: deletePractice, isPending: isDeleting } =
+    useDeletePractice();
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 

@@ -3,19 +3,30 @@ import {
   useInfiniteQuery,
   useMutation,
   useQueryClient,
+  useSuspenseQuery,
 } from "@tanstack/react-query";
-import { collectionKeys } from "./collection-keys";
 import {
   createCollection,
   deleteCollection,
   getCollectionById,
   getCollections,
-  getQuestionsByCollectionId,
   updateCollection,
 } from "./collection.api";
 import type { CollectionSearchRequest } from "./dtos/CollectionSearchRequest";
 import type { CollectionFormValues } from "./schema/collection-form-schema";
 
+// keys
+export const collectionKeys = {
+  root: ["collections"] as const,
+  byId: (id: number) => [...collectionKeys.root, "byId", id],
+  infinite: (request: CollectionSearchRequest) => [
+    ...collectionKeys.root,
+    "infinite",
+    request,
+  ],
+};
+
+// hooks
 export function useCreateCollection() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -78,16 +89,9 @@ export const GET_COLLECTION_BY_ID_QO = (collectionId: number) =>
     queryFn: () => getCollectionById(collectionId),
   });
 
-export function createQueryOptionsForCollectionById(collectionId: number) {
-  return queryOptions({
+export const useGetCollectionById = (collectionId: number) => {
+  return useSuspenseQuery({
     queryKey: collectionKeys.byId(collectionId),
     queryFn: () => getCollectionById(collectionId),
   });
-}
-
-export function createQOForQuestionsByCollectionId(collectionId: number) {
-  return queryOptions({
-    queryKey: collectionKeys.questionsByCollectionId(collectionId),
-    queryFn: () => getQuestionsByCollectionId(collectionId),
-  });
-}
+};

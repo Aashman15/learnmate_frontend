@@ -4,7 +4,6 @@ import { api } from "@/lib/axios";
 import type { CollectionDto } from "./dtos/CollectionDto";
 import type { CollectionSearchRequest } from "./dtos/CollectionSearchRequest";
 import type { CollectionFormValues } from "./schema/collection-form-schema";
-import type { QuestionBaseDto } from "../question/dtos/QuestionBaseDto";
 
 export async function createCollection(
   formValues: CollectionFormValues
@@ -45,14 +44,5 @@ export async function getCollections(
 
 export async function getCollectionById(id: number): Promise<CollectionDto> {
   const response = await api.get<CollectionDto>(`/collections/${id}`);
-  return response.data;
-}
-
-export async function getQuestionsByCollectionId(
-  collectionId: number
-): Promise<QuestionBaseDto[]> {
-  const response = await api.get<QuestionBaseDto[]>(
-    `/collections/${collectionId}/questions`
-  );
   return response.data;
 }

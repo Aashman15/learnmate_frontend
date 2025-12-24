@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import QuestionFormPage from "@/features/question/components/question-form-page";
 import {
-  createQOForQuestionById,
+  useGetQuestionById,
   useUpdateQuestion,
 } from "@/features/question/question.hooks";
 import {
@@ -12,7 +12,6 @@ import {
 } from "@/features/question/schema/question-form-schema";
 import { getErrorMessage } from "@/utils/error.utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 
@@ -27,9 +26,7 @@ function UpdateQuestionPage() {
 
   const router = useRouter();
 
-  const { data: question } = useSuspenseQuery(
-    createQOForQuestionById(Number(questionId))
-  );
+  const { data: question } = useGetQuestionById(Number(questionId));
 
   const methods = useForm<QuestionFormValues>({
     defaultValues: {

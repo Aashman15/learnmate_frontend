@@ -1,10 +1,11 @@
 import DeleteDialog from "@/components/delete-dialog";
 import { toaster } from "@/components/ui/toaster";
-import { createQOForQuestionsByCollectionId } from "@/features/collection/collection.hooks";
-import { useDeleteQuestion } from "@/features/question/question.hooks";
+import {
+  useDeleteQuestion,
+  useGetQuestions,
+} from "@/features/question/question.hooks";
 import { getErrorMessage } from "@/utils/error.utils";
 import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -25,9 +26,11 @@ export default function CollectionQuestionsPage() {
 
   const { collectionId } = Route.useParams();
 
-  const { data: questions } = useSuspenseQuery(
-    createQOForQuestionsByCollectionId(Number(collectionId))
-  );
+  const { data: questionsPage } = useGetQuestions({
+    collectionId: Number(collectionId),
+    page: 1,
+    pageSize: 100000,
+  });
 
   const onCreateQuestionClick = () => {
     navigate({
@@ -85,7 +88,7 @@ export default function CollectionQuestionsPage() {
           </Button>
         </HStack>
         <Stack mt={6} gap={4}>
-          {questions.map((question) => (
+          {questionsPage.content.map((question) => (
             <Box key={question.id}>
               <Stack>
                 <Text fontWeight={"bold"} fontSize={"2xl"}>

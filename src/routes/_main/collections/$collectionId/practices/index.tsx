@@ -1,10 +1,10 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { GET_COLLECTION_BY_ID_QO } from "@/features/collection/collection.hooks";
-import ConfirmPracticeNowDialog from "@/features/practice-session/components/confirm-practice-now-dialog";
-import PracticeSessionCard from "@/features/practice-session/components/practice-card";
-import { getPracticesByCollectionIdQO } from "@/features/practice-session/practice-query-options";
+import ConfirmPracticeNowDialog from "@/features/practice/components/confirm-practice-now-dialog";
+import PracticeSessionCard from "@/features/practice/components/practice-card";
+import { useGetPracticesByCollectionId } from "@/features/practice/hooks/practice.hooks";
 import { Button, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
   "/_main/collections/$collectionId/practices/"
@@ -21,8 +21,8 @@ export default function PracticeSessionsTabContent() {
     GET_COLLECTION_BY_ID_QO(Number(collectionId))
   );
 
-  const { data: practices } = useSuspenseQuery(
-    getPracticesByCollectionIdQO(Number(collectionId))
+  const { data: practices } = useGetPracticesByCollectionId(
+    Number(collectionId)
   );
 
   return (
