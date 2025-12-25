@@ -1,2 +1,10 @@
 export type PracticeInputType = "AUDIO" | "TEXT";
-export type PracticeStatus = "STARTED" | "SUBMITTED";
+
+export interface PracticeAnswerState {
+  id?: number;
+  questionId: number;
+  question: string;
+  givenTextAnswer?: string;
+  givenAudioAnswerUrl?: string;
+  isCreated: boolean;
+}

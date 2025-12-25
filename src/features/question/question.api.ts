@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 import type { QuestionFormValues } from "./schema/question-form-schema";
-import type { QuestionBaseDto } from "./dtos/QuestionBaseDto";
+import type { QuestionDto } from "./dtos/QuestionDto";
 import type { MessageDto } from "@/dtos/MessageDto";
 import type { QuestionDetailDto } from "./dtos/QuestionDetailDto";
 import type { QuestionSearchRequest } from "./dtos/QuestionSearchRequest";
@@ -8,8 +8,8 @@ import type { PaginatedResponse } from "@/dtos/PaginatedResponse";
 
 export async function createQuestion(
   data: QuestionFormValues
-): Promise<QuestionBaseDto> {
-  const response = await api.post<QuestionBaseDto>(`/questions`, data);
+): Promise<QuestionDto> {
+  const response = await api.post<QuestionDto>(`/questions`, data);
 
   return response.data;
 }
@@ -17,8 +17,8 @@ export async function createQuestion(
 export async function updateQuestion(
   questionId: number,
   data: QuestionFormValues
-): Promise<QuestionBaseDto> {
-  const response = await api.patch<QuestionBaseDto>(
+): Promise<QuestionDto> {
+  const response = await api.patch<QuestionDto>(
     `/questions/${questionId}`,
     data
   );
@@ -42,12 +42,9 @@ export async function getQuestionById(
 }
 
 export const getQuestions = async (request: QuestionSearchRequest) => {
-  const response = await api.get<PaginatedResponse<QuestionBaseDto>>(
-    `/questions`,
-    {
-      params: request,
-    }
-  );
+  const response = await api.get<PaginatedResponse<QuestionDto>>(`/questions`, {
+    params: request,
+  });
 
   return response.data;
 };

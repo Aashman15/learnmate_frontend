@@ -1,10 +1,9 @@
 import { create } from "zustand";
-import type { PracticeItemWithAnswer } from "../dtos/PracticeItemWithAnswer";
 import type { PracticeInputType } from "../practice-types";
 interface PracticeState {
-  collectionId: number | null;
-  practiceId: number | null;
-  inputMode: PracticeInputType;
+  collectionId?: number | null;
+  practiceId?: number | null;
+  inputMode?: PracticeInputType;
   items: PracticeItemWithAnswer[];
   currentIndex: number;
 }

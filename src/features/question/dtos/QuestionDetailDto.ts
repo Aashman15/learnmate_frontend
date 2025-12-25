@@ -1,6 +1,8 @@
 import type { CollectionDto } from "@/features/collection/dtos/CollectionDto";
-import type { QuestionBaseDto } from "./QuestionBaseDto";
 
-export interface QuestionDetailDto extends QuestionBaseDto {
+export interface QuestionDetailDto {
+  id: number;
+  question: string;
+  answer?: string;
   collection: CollectionDto;
 }

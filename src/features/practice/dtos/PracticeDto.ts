@@ -1,8 +1,7 @@
-import type { CollectionDto } from "@/features/collection/dtos/CollectionDto";
-import type { PracticeBaseDto } from "./PracticeBaseDto";
-import type { PracticeItemDto } from "./PracticeItemDto";
+import type { PracticeInputType } from "../practice-types";
 
-export interface PracticeDto extends PracticeBaseDto {
-  answers: PracticeItemDto[];
-  collection: CollectionDto;
+export interface PracticeDto {
+  id: number;
+  startTime: string;
+  inputType: PracticeInputType;
 }

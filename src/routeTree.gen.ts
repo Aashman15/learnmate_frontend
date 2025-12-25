@@ -20,6 +20,8 @@ import { Route as MainCollectionsCollectionIdPracticesIndexRouteImport } from '.
 import { Route as MainCollectionsCollectionIdQuestionsNewRouteImport } from './routes/_main/collections/$collectionId/questions/new'
 import { Route as MainCollectionsCollectionIdPracticesPracticeIdRouteImport } from './routes/_main/collections/$collectionId/practices/$practiceId'
 import { Route as MainCollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport } from './routes/_main/collections/$collectionId/questions/$questionId.update'
+import { Route as BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRouteImport } from './routes/_blank/collections/$collectionId/practices/$practiceId/practice/index'
+import { Route as BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRouteImport } from './routes/_blank/collections/$collectionId/practices/$practiceId/practice/review'
 
 const PracticeRouteRoute = PracticeRouteRouteImport.update({
   id: '/practice',
@@ -81,6 +83,22 @@ const MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute =
     path: '/questions/$questionId/update',
     getParentRoute: () => MainCollectionsCollectionIdRouteRoute,
   } as any)
+const BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRoute =
+  BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRouteImport.update(
+    {
+      id: '/_blank/collections/$collectionId/practices/$practiceId/practice/',
+      path: '/collections/$collectionId/practices/$practiceId/practice/',
+      getParentRoute: () => rootRouteImport,
+    } as any,
+  )
+const BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRoute =
+  BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRouteImport.update(
+    {
+      id: '/_blank/collections/$collectionId/practices/$practiceId/practice/review',
+      path: '/collections/$collectionId/practices/$practiceId/practice/review',
+      getParentRoute: () => rootRouteImport,
+    } as any,
+  )
 
 export interface FileRoutesByFullPath {
   '/practice': typeof PracticeRouteRouteWithChildren
@@ -93,6 +111,8 @@ export interface FileRoutesByFullPath {
   '/collections/$collectionId/practices': typeof MainCollectionsCollectionIdPracticesIndexRoute
   '/collections/$collectionId/questions': typeof MainCollectionsCollectionIdQuestionsIndexRoute
   '/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
+  '/collections/$collectionId/practices/$practiceId/practice/review': typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRoute
+  '/collections/$collectionId/practices/$practiceId/practice': typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRoute
 }
 export interface FileRoutesByTo {
   '/practice': typeof PracticeRouteRouteWithChildren
@@ -105,6 +125,8 @@ export interface FileRoutesByTo {
   '/collections/$collectionId/practices': typeof MainCollectionsCollectionIdPracticesIndexRoute
   '/collections/$collectionId/questions': typeof MainCollectionsCollectionIdQuestionsIndexRoute
   '/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
+  '/collections/$collectionId/practices/$practiceId/practice/review': typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRoute
+  '/collections/$collectionId/practices/$practiceId/practice': typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -119,6 +141,8 @@ export interface FileRoutesById {
   '/_main/collections/$collectionId/practices/': typeof MainCollectionsCollectionIdPracticesIndexRoute
   '/_main/collections/$collectionId/questions/': typeof MainCollectionsCollectionIdQuestionsIndexRoute
   '/_main/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
+  '/_blank/collections/$collectionId/practices/$practiceId/practice/review': typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRoute
+  '/_blank/collections/$collectionId/practices/$practiceId/practice/': typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -133,6 +157,8 @@ export interface FileRouteTypes {
     | '/collections/$collectionId/practices'
     | '/collections/$collectionId/questions'
     | '/collections/$collectionId/questions/$questionId/update'
+    | '/collections/$collectionId/practices/$practiceId/practice/review'
+    | '/collections/$collectionId/practices/$practiceId/practice'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/practice'
@@ -145,6 +171,8 @@ export interface FileRouteTypes {
     | '/collections/$collectionId/practices'
     | '/collections/$collectionId/questions'
     | '/collections/$collectionId/questions/$questionId/update'
+    | '/collections/$collectionId/practices/$practiceId/practice/review'
+    | '/collections/$collectionId/practices/$practiceId/practice'
   id:
     | '__root__'
     | '/_main'
@@ -158,11 +186,15 @@ export interface FileRouteTypes {
     | '/_main/collections/$collectionId/practices/'
     | '/_main/collections/$collectionId/questions/'
     | '/_main/collections/$collectionId/questions/$questionId/update'
+    | '/_blank/collections/$collectionId/practices/$practiceId/practice/review'
+    | '/_blank/collections/$collectionId/practices/$practiceId/practice/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   MainRouteRoute: typeof MainRouteRouteWithChildren
   PracticeRouteRoute: typeof PracticeRouteRouteWithChildren
+  BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRoute: typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRoute
+  BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRoute: typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -244,6 +276,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRouteImport
       parentRoute: typeof MainCollectionsCollectionIdRouteRoute
     }
+    '/_blank/collections/$collectionId/practices/$practiceId/practice/': {
+      id: '/_blank/collections/$collectionId/practices/$practiceId/practice/'
+      path: '/collections/$collectionId/practices/$practiceId/practice'
+      fullPath: '/collections/$collectionId/practices/$practiceId/practice'
+      preLoaderRoute: typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_blank/collections/$collectionId/practices/$practiceId/practice/review': {
+      id: '/_blank/collections/$collectionId/practices/$practiceId/practice/review'
+      path: '/collections/$collectionId/practices/$practiceId/practice/review'
+      fullPath: '/collections/$collectionId/practices/$practiceId/practice/review'
+      preLoaderRoute: typeof BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -306,6 +352,10 @@ const PracticeRouteRouteWithChildren = PracticeRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   MainRouteRoute: MainRouteRouteWithChildren,
   PracticeRouteRoute: PracticeRouteRouteWithChildren,
+  BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRoute:
+    BlankCollectionsCollectionIdPracticesPracticeIdPracticeReviewRoute,
+  BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRoute:
+    BlankCollectionsCollectionIdPracticesPracticeIdPracticeIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

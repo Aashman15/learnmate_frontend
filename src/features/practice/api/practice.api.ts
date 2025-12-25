@@ -1,51 +1,20 @@
-import { api } from "@/lib/axios";
-import type { PracticeStartRequest } from "../dtos/PracticeStartRequest";
-import type { PracticeStartResponse } from "../dtos/PracticeStartResponse";
-import type { PracticeItemBaseDto } from "../dtos/PracticeItemBaseDto";
-import type { PracticeSubmitRequest } from "../dtos/PracticeSubmitRequest";
-import type { PracticeSubmitResponse } from "../dtos/PracticeSubmitResponse";
-import type { PracticeBaseDto } from "../dtos/PracticeBaseDto";
 import type { MessageDto } from "@/dtos/MessageDto";
+import type { PaginatedResponse } from "@/dtos/PaginatedResponse";
+import { api } from "@/lib/axios";
+import type { PracticeCreateRequest } from "../dtos/PracticeCreateRequest";
+import type { PracticeDetailDto } from "../dtos/PracticeDetailDto";
 import type { PracticeDto } from "../dtos/PracticeDto";
+import type { PracticeSearchRequest } from "../dtos/PracticeSearchRequest";
 
-export async function startPractice(request: PracticeStartRequest) {
-  const startPracticeResponse = await api.post<PracticeStartResponse>(
-    `/practices`,
-    request
-  );
-
-  const items = await getPracticeItems(startPracticeResponse.data.practiceId);
-
-  return {
-    practiceId: startPracticeResponse.data.practiceId,
-    items,
-  };
-}
-
-export async function getPracticeItems(
-  practiceId: number
-): Promise<PracticeItemBaseDto[]> {
-  const response = await api.get<PracticeItemBaseDto[]>(
-    `/practices/${practiceId}/items`
-  );
+export async function createPractice(request: PracticeCreateRequest) {
+  const response = await api.post<PracticeDto>(`/practices`, request);
   return response.data;
 }
 
-export async function submitPractice(
-  practiceId: number,
-  request: PracticeSubmitRequest
-) {
-  const response = await api.post<PracticeSubmitResponse>(
-    `/practices/${practiceId}/submit`,
-    request
-  );
-  return response.data;
-}
-
-export async function getPracticesByCollectionId(collectionId: number) {
-  const response = await api.get<PracticeBaseDto[]>(
-    `/collections/${collectionId}/practices`
-  );
+export async function getPractices(searchRequest: PracticeSearchRequest) {
+  const response = await api.get<PaginatedResponse<PracticeDto>>(`/practices`, {
+    params: searchRequest,
+  });
   return response.data;
 }
 
@@ -55,6 +24,6 @@ export async function deletePracticeById(practiceId: number) {
 }
 
 export async function getPracticeById(practiceId: number) {
-  const response = await api.get<PracticeDto>(`/practices/${practiceId}`);
+  const response = await api.get<PracticeDetailDto>(`/practices/${practiceId}`);
   return response.data;
 }

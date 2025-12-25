@@ -1,49 +1,28 @@
 import { queryClient } from "@/lib/react-query";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import {
+  createPractice,
   deletePracticeById,
   getPracticeById,
-  getPracticeItems,
-  getPracticesByCollectionId,
-  startPractice,
-  submitPractice,
+  getPractices,
 } from "../api/practice.api";
-import type { PracticeSubmitRequest } from "../dtos/PracticeSubmitRequest";
+import type { PracticeSearchRequest } from "../dtos/PracticeSearchRequest";
 
 // keys
-
 export const practiceKeys = {
   root: ["practices"] as const,
+  list: (searchRequest: PracticeSearchRequest) => [
+    ...practiceKeys.root,
+    "list",
+    searchRequest,
+  ],
   byId: (practiceId: number) => [...practiceKeys.root, "byId", practiceId],
-  byCollectionId: (collectionId: number) => [
-    ...practiceKeys.root,
-    "byCollectionId",
-    collectionId,
-  ],
-  itemsByPracticeId: (practiceId: number) => [
-    ...practiceKeys.root,
-    "itemsByPracticeId",
-    practiceId,
-  ],
 };
 
 // hooks
-
-export const useStartPractice = () => {
+export const useCreatePractice = () => {
   return useMutation({
-    mutationFn: startPractice,
-  });
-};
-
-export const useSubmitPractice = () => {
-  return useMutation({
-    mutationFn: ({
-      practiceId,
-      request,
-    }: {
-      practiceId: number;
-      request: PracticeSubmitRequest;
-    }) => submitPractice(practiceId, request),
+    mutationFn: createPractice,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: practiceKeys.root,
@@ -52,17 +31,10 @@ export const useSubmitPractice = () => {
   });
 };
 
-export const useGetPracticeItemsByPracticeId = (practiceId: number) => {
+export const useGetPractices = (searchRequest: PracticeSearchRequest) => {
   return useSuspenseQuery({
-    queryKey: practiceKeys.itemsByPracticeId(practiceId),
-    queryFn: () => getPracticeItems(practiceId),
-  });
-};
-
-export const useGetPracticesByCollectionId = (collectionId: number) => {
-  return useSuspenseQuery({
-    queryKey: practiceKeys.byCollectionId(collectionId),
-    queryFn: () => getPracticesByCollectionId(collectionId),
+    queryKey: practiceKeys.list(searchRequest),
+    queryFn: () => getPractices(searchRequest),
   });
 };
 

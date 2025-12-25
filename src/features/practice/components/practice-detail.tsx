@@ -12,12 +12,12 @@ import {
 import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import type { PracticeDto } from "../dtos/PracticeDto";
-import type { PracticeItemDto } from "../dtos/PracticeItemDto";
+import type { PracticeAnswerDto } from "../dtos/PracticeAnswerDto";
+import type { PracticeDetailDto } from "../dtos/PracticeDetailDto";
 import ChangeAnswerDialog from "./change-answer-dialog";
 
 interface PracticeDetailProps {
-  practice: PracticeDto;
+  practice: PracticeDetailDto;
 }
 
 export function PracticeDetail({ practice }: PracticeDetailProps) {
@@ -27,7 +27,7 @@ export function PracticeDetail({ practice }: PracticeDetailProps) {
     useState(false);
 
   const [selectedPracticeItem, setSelectedPracticeItem] =
-    useState<PracticeItemDto | null>(null);
+    useState<PracticeAnswerDto | null>(null);
 
   const getAudioUrl = (path: string): string => {
     return import.meta.env.VITE_API_BASE_URL + path;
@@ -51,24 +51,6 @@ export function PracticeDetail({ practice }: PracticeDetailProps) {
                     formatIso(practice.startTime).time
                   }`}</Text>
                 </HStack>
-                <HStack justify="space-between">
-                  <Text fontWeight="500">Ended</Text>
-                  {practice.endTime ? (
-                    <Text>{`${formatIso(practice.endTime).date} - ${
-                      formatIso(practice.endTime).time
-                    }`}</Text>
-                  ) : (
-                    <Text></Text>
-                  )}
-                </HStack>
-                <HStack justify="space-between">
-                  <Text fontWeight="500">Total Questions</Text>
-                  <Text>{practice.totalQuestions}</Text>
-                </HStack>
-                <HStack justify="space-between">
-                  <Text fontWeight="500">Answered</Text>
-                  <Text>{practice.totalAnsweredQuestions}</Text>
-                </HStack>
               </VStack>
             </Card.Body>
           </Card.Root>
@@ -82,32 +64,38 @@ export function PracticeDetail({ practice }: PracticeDetailProps) {
                 <Card.Body gap={3}>
                   <VStack align="start" gap={2}>
                     <Text fontWeight="500" fontSize="sm">
-                      {answer.question}
+                      {answer.question.question}
                     </Text>
                     <Box>
                       <Text fontSize="xs" fontWeight="500">
                         Expected Answer:
                       </Text>
-                      <Text fontSize="sm">{answer.expectedAnswer}</Text>
+                      <Text fontSize="sm">{answer.question.answer}</Text>
                     </Box>
                     <Box>
                       <Text fontSize="xs" fontWeight="500">
                         Your Answer:
                       </Text>
 
-                      {practice.inputType === "AUDIO" && answer.audioUrl && (
-                        <audio controls src={getAudioUrl(answer.audioUrl)} />
-                      )}
+                      {practice.inputType === "AUDIO" &&
+                        answer.givenAudioAnswerUrl && (
+                          <audio
+                            controls
+                            src={getAudioUrl(answer.givenAudioAnswerUrl)}
+                          />
+                        )}
 
-                      {practice.inputType === "TEXT" && answer.givenAnswer && (
-                        <Text fontSize="sm">{answer.givenAnswer}</Text>
-                      )}
+                      {practice.inputType === "TEXT" &&
+                        answer.givenTextAnswer && (
+                          <Text fontSize="sm">{answer.givenTextAnswer}</Text>
+                        )}
 
-                      {!answer.givenAnswer && !answer.audioUrl && (
-                        <Text fontSize={"sm"} color={"red.500"}>
-                          Not Answered
-                        </Text>
-                      )}
+                      {!answer.givenTextAnswer &&
+                        !answer.givenAudioAnswerUrl && (
+                          <Text fontSize={"sm"} color={"red.500"}>
+                            Not Answered
+                          </Text>
+                        )}
 
                       <Button
                         variant={"outline"}

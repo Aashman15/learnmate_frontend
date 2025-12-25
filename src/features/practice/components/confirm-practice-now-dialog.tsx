@@ -14,8 +14,8 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import type { PracticeInputType } from "../practice-types";
-import { useStartPractice } from "../hooks/practice.hooks";
 import { usePracticeStore } from "../store/practice-store";
+import { useCreatePractice } from "../hooks/practice.hooks";
 
 type ConfirmPracticeNowDialogProps = {
   collection: CollectionDto;
@@ -31,11 +31,11 @@ export default function ConfirmPracticeNowDialog({
   const { setItems, setPracticeId, setCollectionId, setInputMode, inputMode } =
     usePracticeStore();
 
-  const { mutateAsync: startPracticeAsync, isPending } = useStartPractice();
+  const { mutateAsync: createPractice, isPending } = useCreatePractice();
 
   const onStartPractice = async () => {
     try {
-      const { practiceId, items } = await startPracticeAsync({
+      const { practiceId, items } = await createPractice({
         collectionId: collection.id,
         inputType: inputMode,
       });
