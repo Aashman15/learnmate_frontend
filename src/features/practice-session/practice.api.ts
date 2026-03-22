@@ -11,7 +11,7 @@ import type { PracticeDto } from "./dtos/PracticeDto";
 export async function startPractice(request: PracticeStartRequest) {
   const startPracticeResponse = await api.post<PracticeStartResponse>(
     `/practices`,
-    request
+    request,
   );
 
   const items = await getPracticeItems(startPracticeResponse.data.practiceId);
@@ -23,21 +23,21 @@ export async function startPractice(request: PracticeStartRequest) {
 }
 
 export async function getPracticeItems(
-  practiceId: number
+  practiceId: number,
 ): Promise<PracticeItemBaseDto[]> {
   const response = await api.get<PracticeItemBaseDto[]>(
-    `/practices/${practiceId}/items`
+    `/practices/${practiceId}/items`,
   );
   return response.data;
 }
 
 export async function submitPractice(
   practiceId: number,
-  request: PracticeSubmitRequest
+  request: PracticeSubmitRequest,
 ) {
   const response = await api.post<PracticeSubmitResponse>(
     `/practices/${practiceId}/submit`,
-    request
+    request,
   );
   return response.data;
 }
@@ -49,7 +49,7 @@ export async function getPractices() {
 
 export async function getPracticesByCollectionId(collectionId: number) {
   const response = await api.get<PracticeBaseDto[]>(
-    `/collections/${collectionId}/practices`
+    `/collections/${collectionId}/practices`,
   );
   return response.data;
 }

@@ -1,5 +1,9 @@
-import type { PracticeItemWithAnswer } from "./PracticeItemWithAnswer";
+interface PracticeItemAnswer {
+  id: number;
+  answer?: string;
+  audioUrl?: string;
+}
 
 export interface PracticeSubmitRequest {
-  answers: Omit<PracticeItemWithAnswer, "question">[];
+  answers: PracticeItemAnswer[];
 }

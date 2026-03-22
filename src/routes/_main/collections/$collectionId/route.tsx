@@ -1,4 +1,5 @@
 import DeleteDialog from "@/components/delete-dialog";
+import Divider from "@/components/divider";
 import { toaster } from "@/components/ui/toaster";
 import {
   GET_COLLECTION_BY_ID_QO,
@@ -13,7 +14,6 @@ import {
   Heading,
   HStack,
   Stack,
-  Tabs,
   Text,
 } from "@chakra-ui/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -41,7 +41,7 @@ function CollectionDetailsPageLayout() {
     useDeleteCollection();
 
   const { data: collection } = useSuspenseQuery(
-    GET_COLLECTION_BY_ID_QO(Number(collectionId))
+    GET_COLLECTION_BY_ID_QO(Number(collectionId)),
   );
 
   const onDeleteCollection = async () => {
@@ -62,28 +62,28 @@ function CollectionDetailsPageLayout() {
     }
   };
 
-  const onTabChange = (tab: string) => {
-    if (tab === "practices") {
-      navigate({
-        to: "/collections/$collectionId/practices",
-        params: {
-          collectionId,
-        },
-      });
-    } else {
-      navigate({
-        to: "/collections/$collectionId/questions",
-        params: {
-          collectionId,
-        },
-      });
-    }
+  const onPracticesClick = () => {
+    navigate({
+      to: "/collections/$collectionId/practices",
+      params: {
+        collectionId,
+      },
+    });
+  };
+
+  const onQuestionsClick = () => {
+    navigate({
+      to: "/collections/$collectionId/questions",
+      params: {
+        collectionId,
+      },
+    });
   };
 
   return (
     <>
       <Container mt={"10"}>
-        <Stack gap={4}>
+        <Stack gap={4} mb={4}>
           <Box>
             <Heading fontSize={"4xl"}>Colelction Details</Heading>
             <Heading mt={8}>{collection.name}</Heading>
@@ -107,30 +107,25 @@ function CollectionDetailsPageLayout() {
             </DeleteDialog>
           </HStack>
         </Stack>
-        <Tabs.Root
-          defaultValue={
-            pathname.includes("practices") ? "practices" : "questions"
-          }
-          onValueChange={(d) => onTabChange(d.value)}
-          mt={5}
-          pb={"16"}
-        >
-          <Tabs.List>
-            <Tabs.Trigger value="questions">
-              <CiCircleQuestion /> Questions
-            </Tabs.Trigger>
-            <Tabs.Trigger value="practices">
-              <CiStickyNote />
-              Practices
-            </Tabs.Trigger>
-          </Tabs.List>
-          <Tabs.Content value="questions">
-            <Outlet />
-          </Tabs.Content>
-          <Tabs.Content value="practices">
-            <Outlet />
-          </Tabs.Content>
-        </Tabs.Root>
+
+        <Divider />
+
+        <Stack direction={"row"} gap={2} mb={6} mt={4}>
+          <Button
+            onClick={onQuestionsClick}
+            variant={pathname.includes("questions") ? "outline" : "ghost"}
+          >
+            <CiCircleQuestion /> Questions
+          </Button>
+          <Button
+            onClick={onPracticesClick}
+            variant={pathname.includes("practices") ? "outline" : "ghost"}
+          >
+            <CiStickyNote />
+            Practices
+          </Button>
+        </Stack>
+        <Outlet />
       </Container>
 
       <CollectionUpdateDialog

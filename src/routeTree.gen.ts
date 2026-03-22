@@ -83,15 +83,15 @@ const MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof MainIndexRoute
   '/practice': typeof PracticeRouteRouteWithChildren
   '/practice/question': typeof PracticeQuestionRoute
   '/practice/review': typeof PracticeReviewRoute
-  '/': typeof MainIndexRoute
   '/collections/$collectionId': typeof MainCollectionsCollectionIdRouteRouteWithChildren
   '/collections/$collectionId/practices/$practiceId': typeof MainCollectionsCollectionIdPracticesPracticeIdRoute
   '/collections/$collectionId/questions/new': typeof MainCollectionsCollectionIdQuestionsNewRoute
-  '/collections/$collectionId/practices': typeof MainCollectionsCollectionIdPracticesIndexRoute
-  '/collections/$collectionId/questions': typeof MainCollectionsCollectionIdQuestionsIndexRoute
+  '/collections/$collectionId/practices/': typeof MainCollectionsCollectionIdPracticesIndexRoute
+  '/collections/$collectionId/questions/': typeof MainCollectionsCollectionIdQuestionsIndexRoute
   '/collections/$collectionId/questions/$questionId/update': typeof MainCollectionsCollectionIdQuestionsQuestionIdUpdateRoute
 }
 export interface FileRoutesByTo {
@@ -123,15 +123,15 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/practice'
     | '/practice/question'
     | '/practice/review'
-    | '/'
     | '/collections/$collectionId'
     | '/collections/$collectionId/practices/$practiceId'
     | '/collections/$collectionId/questions/new'
-    | '/collections/$collectionId/practices'
-    | '/collections/$collectionId/questions'
+    | '/collections/$collectionId/practices/'
+    | '/collections/$collectionId/questions/'
     | '/collections/$collectionId/questions/$questionId/update'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -177,7 +177,7 @@ declare module '@tanstack/react-router' {
     '/_main': {
       id: '/_main'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof MainRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -212,14 +212,14 @@ declare module '@tanstack/react-router' {
     '/_main/collections/$collectionId/questions/': {
       id: '/_main/collections/$collectionId/questions/'
       path: '/questions'
-      fullPath: '/collections/$collectionId/questions'
+      fullPath: '/collections/$collectionId/questions/'
       preLoaderRoute: typeof MainCollectionsCollectionIdQuestionsIndexRouteImport
       parentRoute: typeof MainCollectionsCollectionIdRouteRoute
     }
     '/_main/collections/$collectionId/practices/': {
       id: '/_main/collections/$collectionId/practices/'
       path: '/practices'
-      fullPath: '/collections/$collectionId/practices'
+      fullPath: '/collections/$collectionId/practices/'
       preLoaderRoute: typeof MainCollectionsCollectionIdPracticesIndexRouteImport
       parentRoute: typeof MainCollectionsCollectionIdRouteRoute
     }

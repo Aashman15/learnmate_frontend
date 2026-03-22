@@ -55,9 +55,9 @@ export default function ConfirmPracticeNowDialog({
         items.map((item) => ({
           answer: "",
           audioUrl: "",
-          practiceItemId: item.practiceItemId,
+          id: item.id,
           question: item.question,
-        }))
+        })),
       );
       navigate({
         to: "/practice/question",

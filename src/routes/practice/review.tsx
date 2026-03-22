@@ -12,9 +12,7 @@ function PracticeReviewModePage() {
   const { items, setCurrentIndex } = usePracticeStore();
 
   const onEditAnswerClick = (practiceItemId: number) => {
-    const index = items.findIndex(
-      (item) => item.practiceItemId === practiceItemId
-    );
+    const index = items.findIndex((item) => item.id === practiceItemId);
     setCurrentIndex(index);
     navigate({
       to: "/practice/question",
@@ -50,7 +48,7 @@ function PracticeReviewModePage() {
           <Button
             mt={2}
             variant={"outline"}
-            onClick={() => onEditAnswerClick(item.practiceItemId)}
+            onClick={() => onEditAnswerClick(item.id)}
           >
             Edit Answer
           </Button>

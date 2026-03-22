@@ -19,7 +19,7 @@ export default function ConfirmPracticeDialog({
   const { collectionId, practiceId, items } = usePracticeStore();
 
   const { mutateAsync: submitPractice, isPending } = useMutation(
-    getSubmitPracticeMO()
+    getSubmitPracticeMO(),
   );
 
   const isAnsweredItem = (item: PracticeItemWithAnswer) => {
@@ -33,11 +33,15 @@ export default function ConfirmPracticeDialog({
     try {
       const answeredItems = items.filter((item) => isAnsweredItem(item));
 
+      console.log({
+        answeredItems,
+      });
+
       await submitPractice({
         practiceId: practiceId!,
         request: {
           answers: answeredItems.map((item) => ({
-            ...item,
+            id: item.id,
             audioUrl: item.audioUrl || undefined,
             answer: item.answer || undefined,
           })),

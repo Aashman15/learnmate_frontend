@@ -1,4 +1,4 @@
 export interface PracticeItemBaseDto {
-  practiceItemId: number;
+  id: number;
   question: string;
 }
